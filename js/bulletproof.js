@@ -34,7 +34,7 @@ PhaserGame.prototype = {
         // this.load.baseURL = 'http://files.phaser.io.s3.amazonaws.com/codingtips/issue007/';
         this.load.crossOrigin = 'anonymous';
 
-        this.load.image('background', 'steal_like_an_artist/assets/back.png');
+        this.load.image('background', 'img/background.png');
         this.load.image('foreground', 'steal_like_an_artist/assets/fore.png');
         //this.load.image('player', 'steal_like_an_artist/assets/ship.png');
         this.load.spritesheet('player', 'img/front.png', 133, 160);
@@ -86,7 +86,7 @@ PhaserGame.prototype = {
 
         this.player.animations.add('left', [0, 1, 2, 3, 4, 5]);
 
-        this.weaponName = this.add.bitmapText(8, 564, 'shmupfont', "ENTER = Next Weapon", 24);
+        this.weaponName = this.add.bitmapText(8, 564, 'shmupfont', "Binding of ice-ac", 24);
 
         this.enemyHandler = new EnemyHandler.IceCream(this.game);
         this.enemyHandler.visible = true;
