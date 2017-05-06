@@ -47,6 +47,10 @@ PhaserGame.prototype = {
         {
             this.load.image('bullet' + i, 'steal_like_an_artist/assets/bullet' + i + '.png');
         }
+        for (var i = 1; i <= 3; i++)
+        {
+            this.load.image('eraser' + i, 'img/eraser' + i + '.png');
+        }
 
         this.load.spritesheet('greed', 'img/greed.png', 117, 189);
         this.load.spritesheet('gluttony', 'img/gluttony.png', 200, 200);

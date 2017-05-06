@@ -9,12 +9,12 @@ Weapon.SingleBullet = function (game) {
     Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
 
     this.nextFire = 0;
-    this.bulletSpeed = 600;
+    this.bulletSpeed = 60;
     this.fireRate = 100;
 
     for (var i = 0; i < 64; i++)
     {
-        this.add(new Bullet(game, 'bullet5'), true);
+        this.add(new Bullet(game, 'eraser1'), true);
     }
 
     return this;
