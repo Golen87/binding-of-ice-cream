@@ -10,6 +10,8 @@ EnemyHandler.IceCream = function (game) {
 
     this.enemySpeed = 50;
 
+    this.shake_required = false;
+
     // Max limit of 64 enemies
     for (var i = 0; i < 16; i++)
     {
@@ -41,9 +43,12 @@ EnemyHandler.IceCream.prototype.playerUpdate = function (player, game, bullets) 
             this.children[i].playerUpdate(player);
     }
 
-    game.physics.arcade.collide(player, this.children, this.playerCollide);
+    this.shake_required = false
+    game.physics.arcade.collide(player, this.children, this.playerCollide, null, this);
 
     game.physics.arcade.collide(bullets, this.children, bulletsCollide);
+
+    return this.shake_required;
 };
 
 EnemyHandler.IceCream.prototype.damage = function (game) {
@@ -56,6 +61,7 @@ EnemyHandler.IceCream.prototype.damage = function (game) {
 EnemyHandler.IceCream.prototype.playerCollide = function (player, enemy) {
   console.log('enemyHandler->playerCollide: OUCH');
   enemy.kill();
+  this.shake_required = true;
 
 };
 

@@ -180,6 +180,7 @@ PhaserGame.prototype = {
           if(this._shakeWorldTime <= 0) {
              this.game.world.setBounds(this._boundsCache.x, this._boundsCache.x, this._boundsCache.width, this._boundsCache.height);
           }
+          this.shake_required = false;
         }
 
         var v = this.player.body.velocity;
@@ -211,13 +212,16 @@ PhaserGame.prototype = {
         if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown)
             this.weapons[this.currentWeapon].fire(this.player);
 
-        this.enemyHandler.playerUpdate(this.player, game, this.weapons[this.currentWeapon].children);
+        this.shake_required = this.enemyHandler.playerUpdate(this.player, game, this.weapons[this.currentWeapon].children);
+        if (this.shake_required) {
+           this.shake();
+        }
 
     },
 
     shake: function() {
       this._shakeWorldTime = 20;
-      this._shakeWorldMax = 20;
+      this._shakeWorldMax = 10;
       this.game.world.setBounds(this._boundsCache.x - this._shakeWorldMax, this._boundsCache.y - this._shakeWorldMax, this._boundsCache.width + this._shakeWorldMax, this._boundsCache.height + this._shakeWorldMax);
     },
 
