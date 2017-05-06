@@ -33,11 +33,15 @@ EnemyHandler.IceCream.prototype.spawn = function (sx, sy) {
         newEnemy.spawn(x, y, 0, this.enemySpeed);
 };
 
-EnemyHandler.IceCream.prototype.playerUpdate = function (player) {
+EnemyHandler.IceCream.prototype.playerUpdate = function (player, game, bullets) {
     for (var i = 0; i < this.children.length; i++) {
         if (this.children[i].exists)
             this.children[i].playerUpdate(player);
     }
+
+    game.physics.arcade.collide(player, this.children, playerCollide);
+
+    game.physics.arcade.collide(bullets, this.children, bulletsCollide);
 };
 
 EnemyHandler.IceCream.prototype.damage = function (game) {
@@ -45,4 +49,14 @@ EnemyHandler.IceCream.prototype.damage = function (game) {
         if (this.children[i].exists)
             this.children[i].damage(game);
     }
+};
+
+function playerCollide(player, enemy) {
+  console.log('enemyHandler->playerCollide: OUCH');
+  enemy.kill();
+};
+
+function bulletsCollide(bullet, enemy) {
+  console.log('enemyHandler->bulletsCollide: PEW PEW PEW');
+  enemy.kill();
 };
