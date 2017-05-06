@@ -36,7 +36,8 @@ PhaserGame.prototype = {
 
         this.load.image('background', 'steal_like_an_artist/assets/back.png');
         this.load.image('foreground', 'steal_like_an_artist/assets/fore.png');
-        this.load.image('player', 'steal_like_an_artist/assets/ship.png');
+        //this.load.image('player', 'steal_like_an_artist/assets/ship.png');
+        this.load.spritesheet('player', 'img/front.png', 133, 160);
         this.load.bitmapFont('shmupfont', 'steal_like_an_artist/assets/shmupfont.png', 'steal_like_an_artist/assets/shmupfont.xml');
 
         for (var i = 1; i <= 11; i++)
@@ -80,6 +81,10 @@ PhaserGame.prototype = {
 
         this.player.body.collideWorldBounds = true;
         this.player.anchor.set(0.5);
+        this.player.scale.x = 0.6;
+        this.player.scale.y = 0.6;
+
+        this.player.animations.add('left', [0, 1, 2, 3, 4, 5]);
 
         this.weaponName = this.add.bitmapText(8, 564, 'shmupfont', "ENTER = Next Weapon", 24);
 
@@ -134,22 +139,32 @@ PhaserGame.prototype = {
     update: function () {
 
         this.player.body.velocity.set(0);
-        this.player.rotation = this.physics.arcade.angleToPointer(this.player);
+        //this.player.rotation = this.physics.arcade.angleToPointer(this.player);
 
-        this.player.body.velocity.x = 0;
-        if (this.cursors.left.isDown || this.input.keyboard.isDown(Phaser.Keyboard.A))
+        if (this.cursors.left.isDown || this.input.keyboard.isDown(Phaser.Keyboard.A)) {
             this.player.body.velocity.x -= this.speed;
-        if (this.cursors.right.isDown || this.input.keyboard.isDown(Phaser.Keyboard.D))
+            this.player.animations.play('left', 10, true);
+        }
+        if (this.cursors.right.isDown || this.input.keyboard.isDown(Phaser.Keyboard.D)) {
             this.player.body.velocity.x += this.speed;
-
-        this.player.body.velocity.y = 0;
-        if (this.cursors.up.isDown || this.input.keyboard.isDown(Phaser.Keyboard.W))
+            this.player.animations.play('left', 10, true);
+        }
+        if (this.cursors.up.isDown || this.input.keyboard.isDown(Phaser.Keyboard.W)) {
             this.player.body.velocity.y -= this.speed;
-        if (this.cursors.down.isDown || this.input.keyboard.isDown(Phaser.Keyboard.S))
+            this.player.animations.play('left', 10, true);
+        }
+        if (this.cursors.down.isDown || this.input.keyboard.isDown(Phaser.Keyboard.S)) {
             this.player.body.velocity.y += this.speed;
+            this.player.animations.play('left', 10, true);
+        }
+
+        if (this.player.body.velocity.x == 0 && this.player.body.velocity.y == 0)
+            this.player.animations.stop(null, true);
 
         if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown)
             this.weapons[this.currentWeapon].fire(this.player);
+
+        this.enemyHandler.playerUpdate(this.player);
 
     }
 };
