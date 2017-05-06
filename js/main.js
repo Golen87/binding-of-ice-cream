@@ -84,8 +84,8 @@ PhaserGame.prototype = {
 
         this.player.body.collideWorldBounds = true;
         this.player.anchor.set(0.5);
-        this.player.scale.x = 0.6;
-        this.player.scale.y = 0.6;
+        this.player.scale.x = 0.4;
+        this.player.scale.y = 0.4;
 
         this.player.animations.add('left', [0, 1, 2, 3, 4, 5]);
         //this.player.reset(400, 300);
@@ -96,7 +96,10 @@ PhaserGame.prototype = {
         this.enemyHandler = new EnemyHandler.IceCream(this.game);
         this.enemyHandler.visible = true;
 
-        //  Cursor keys to fly + space to fire
+        // spawn enemies regularly
+        game.time.events.repeat(Phaser.Timer.SECOND * 3, 10, this.spawnEnemy, this);
+
+        //  Cursor keys to move + space/mouse to fire
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
@@ -109,10 +112,15 @@ PhaserGame.prototype = {
         
         var spawnKey = this.input.keyboard.addKey(Phaser.Keyboard.V);
         spawnKey.onDown.add(this.damageEnemy, this);
+
+
     },
 
     spawnEnemy: function () {
-        this.enemyHandler.spawn(200, 200);
+        this.enemyHandler.spawn(
+          this.game.rnd.between(0, 800),
+          this.game.rnd.between(0, 600)
+        );
     },
 
     damageEnemy: function () {
