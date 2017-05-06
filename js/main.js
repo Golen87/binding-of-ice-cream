@@ -84,8 +84,8 @@ PhaserGame.prototype = {
 
         this.player.body.collideWorldBounds = true;
         this.player.anchor.set(0.5);
-        this.player.scale.x = 0.6;
-        this.player.scale.y = 0.6;
+        this.player.scale.x = 0.4;
+        this.player.scale.y = 0.4;
 
         this.player.animations.add('left', [0, 1, 2, 3, 4, 5]);
         //this.player.reset(400, 300);
