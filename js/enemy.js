@@ -19,7 +19,7 @@ var Enemy = function (game, key) {
 
     this.animations.play('idle');
 
-    this.health = 10;
+    this.hp = 10;
     this.damageAnimation = false;
 
 };
@@ -28,6 +28,8 @@ Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
 
 Enemy.prototype.spawn = function (x, y, angle, speed) {
+
+    this.hp = 10;
 
     this.reset(x, y);
     this.scale.set(0.6);
@@ -55,15 +57,20 @@ Enemy.prototype.playerUpdate = function (player) {
 
 };
 
-Enemy.prototype.damage = function (game) {
+Enemy.prototype.damage = function () {
+
+    this.hp -= 1;
 
     if (! this.damageAnimation) {
-        this.health -= 1;
         this.damageAnimation = true;
 
         this.animations.play('hurt');
 
         game.time.events.add(Phaser.Timer.SECOND * 0.5, this.recover, this);
+    }
+
+    if (this.hp < 0) {
+        this.kill();
     }
 
 };
