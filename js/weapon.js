@@ -31,8 +31,6 @@ Weapon.SingleBullet.prototype.fire = function (source) {
     var x = source.x + 10;
     var y = source.y + 10;
 
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
-
     var vinkel = Math.atan2(
             this.game.input.mousePointer.y - source.y,
             this.game.input.mousePointer.x - source.x
@@ -195,6 +193,8 @@ Weapon.ScatterShot.prototype.fire = function (source) {
 
     var x = source.x + 16;
     var y = (source.y + source.height / 2) + this.game.rnd.between(-10, 10);
+
+    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
 
     this.nextFire = this.game.time.time + this.fireRate;
 
