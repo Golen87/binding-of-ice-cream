@@ -76,8 +76,6 @@ PhaserGame.prototype = {
 
         this.player.body.collideWorldBounds = true;
 
-        this.foreground = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'foreground');
-
         this.weaponName = this.add.bitmapText(8, 364, 'shmupfont', "ENTER = Next Weapon", 24);
 
         //  Cursor keys to fly + space to fire
@@ -121,6 +119,7 @@ PhaserGame.prototype = {
     update: function () {
 
         this.player.body.velocity.set(0);
+        this.player.rotation = this.physics.arcade.angleToPointer(this.player);
 
         if (this.cursors.left.isDown)
         {
