@@ -81,7 +81,7 @@ PhaserGame.prototype = {
         this.player.body.collideWorldBounds = true;
         this.player.anchor.set(0.5);
 
-        this.weaponName = this.add.bitmapText(8, 364, 'shmupfont', "ENTER = Next Weapon", 24);
+        this.weaponName = this.add.bitmapText(8, 564, 'shmupfont', "ENTER = Next Weapon", 24);
 
         this.enemyHandler = new EnemyHandler.IceCream(this.game);
         this.enemyHandler.visible = true;
