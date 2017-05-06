@@ -46,7 +46,9 @@ PhaserGame.prototype = {
             this.load.image('bullet' + i, 'steal_like_an_artist/assets/bullet' + i + '.png');
         }
 
-        this.load.spritesheet('enemy', 'img/greed.png', 117, 189);
+        this.load.spritesheet('greed', 'img/greed.png', 117, 189);
+        this.load.spritesheet('gluttony', 'img/gluttony.png', 200, 200);
+        this.load.spritesheet('wrath', 'img/wrath.png', 200, 200);
 
         //  Note: Graphics are not for use in any commercial project
 
@@ -115,10 +117,6 @@ PhaserGame.prototype = {
 
         var spawnKey = this.input.keyboard.addKey(Phaser.Keyboard.C);
         spawnKey.onDown.add(this.spawnEnemy, this);
-        
-        var spawnKey = this.input.keyboard.addKey(Phaser.Keyboard.V);
-        spawnKey.onDown.add(this.damageEnemy, this);
-
 
     },
 
@@ -127,10 +125,6 @@ PhaserGame.prototype = {
           this.game.rnd.between(0, 800),
           this.game.rnd.between(0, 600)
         );
-    },
-
-    damageEnemy: function () {
-        this.enemyHandler.damage(this.game);
     },
 
     nextWeapon: function () {

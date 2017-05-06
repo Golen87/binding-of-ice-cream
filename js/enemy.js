@@ -47,6 +47,7 @@ Enemy.prototype.recover = function () {
 };
 
 Enemy.prototype.update = function () {
+    //this.rotation += 0.03;
 };
 
 Enemy.prototype.playerUpdate = function (player) {
