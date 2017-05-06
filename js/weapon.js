@@ -9,8 +9,8 @@ Weapon.SingleBullet = function (game) {
     Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
 
     this.nextFire = 0;
-    this.bulletSpeed = 60;
-    this.fireRate = 100;
+    this.bulletSpeed = 400;
+    this.fireRate = 200;
 
     for (var i = 0; i < 64; i++)
     {
@@ -28,8 +28,9 @@ Weapon.SingleBullet.prototype.fire = function (source) {
 
     if (this.game.time.time < this.nextFire) { return; }
 
-    var x = source.x + 10;
-    var y = source.y + 10;
+    console.log(source);
+    var x = source.x;
+    var y = source.y;
 
     var angle = pointAngle(source.x, source.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
 

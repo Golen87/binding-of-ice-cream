@@ -98,7 +98,7 @@ PhaserGame.prototype = {
 
         this.player.body.collideWorldBounds = true;
         this.player.anchor.set(0.5);
-        this.player.scale.set(0.3);
+        this.player.scale.set(0.4);
 
         this.player.animations.add('left', [0,1,2,3,4,5], 10, true);
         this.player.animations.add('right', [0,10,11,12,13,14], 10, true);
@@ -128,9 +128,6 @@ PhaserGame.prototype = {
 
         var spawnKey = this.input.keyboard.addKey(Phaser.Keyboard.C);
         spawnKey.onDown.add(this.spawnEnemy, this);
-        
-        var damageKey = this.input.keyboard.addKey(Phaser.Keyboard.V);
-        damageKey.onDown.add(this.damageEnemy, this);
 
         // test new features
         var testKey = this.input.keyboard.addKey(Phaser.Keyboard.G);
