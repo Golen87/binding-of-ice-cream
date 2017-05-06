@@ -4,7 +4,6 @@ var Player = function (game, x, y) {
     Phaser.Sprite.call(this, game, x, y, "player");
 
     this.anchor.set(0.5);
-    console.log("Hello", this);
 };
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
