@@ -27,6 +27,8 @@ PhaserGame.prototype = {
 
         this.game.time.advancedTiming = true;
 
+        this._boundsCache = Phaser.Utils.extend(false, {}, this.game.world.bounds);
+
     },
 
     preload: function () {
@@ -86,8 +88,7 @@ PhaserGame.prototype = {
 
         this.player.body.collideWorldBounds = true;
         this.player.anchor.set(0.5);
-        this.player.scale.x = 0.4;
-        this.player.scale.y = 0.4;
+        this.player.scale.set(0.3);
 
         this.player.animations.add('left', [0,1,2,3,4,5], 10, true);
         this.player.animations.add('right', [0,10,11,12,13,14], 10, true);
@@ -117,7 +118,18 @@ PhaserGame.prototype = {
 
         var spawnKey = this.input.keyboard.addKey(Phaser.Keyboard.C);
         spawnKey.onDown.add(this.spawnEnemy, this);
+        
+        var damageKey = this.input.keyboard.addKey(Phaser.Keyboard.V);
+        damageKey.onDown.add(this.damageEnemy, this);
 
+        // test new features
+        var testKey = this.input.keyboard.addKey(Phaser.Keyboard.G);
+        testKey.onDown.add(this.testCallback, this);
+
+    },
+
+    testCallback: function() {
+      console.log("Sandbox/Debug callback was triggered");
     },
 
     spawnEnemy: function () {
@@ -156,6 +168,19 @@ PhaserGame.prototype = {
     },
 
     update: function () {
+        if(this._shakeWorldTime > 0) {
+          var magnitude = (this._shakeWorldTime / this._shakeWorldMax) * this._shakeWorldMax;
+          var x = this.game.rnd.integerInRange(-magnitude, magnitude);
+          var y = this.game.rnd.integerInRange(-magnitude, magnitude);
+
+          this.game.camera.x = x;
+          this.game.camera.y = y;
+          this._shakeWorldTime--;
+
+          if(this._shakeWorldTime <= 0) {
+             this.game.world.setBounds(this._boundsCache.x, this._boundsCache.x, this._boundsCache.width, this._boundsCache.height);
+          }
+        }
 
         var v = this.player.body.velocity;
         this.player.body.velocity.set( v.x/1.2, v.y/1.2 );
@@ -190,6 +215,11 @@ PhaserGame.prototype = {
 
     },
 
+    shake: function() {
+      this._shakeWorldTime = 20;
+      this._shakeWorldMax = 20;
+      this.game.world.setBounds(this._boundsCache.x - this._shakeWorldMax, this._boundsCache.y - this._shakeWorldMax, this._boundsCache.width + this._shakeWorldMax, this._boundsCache.height + this._shakeWorldMax);
+    },
 
     render: function() {
        //game.debug.inputInfo(32, 32);

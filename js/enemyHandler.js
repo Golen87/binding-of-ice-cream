@@ -41,14 +41,22 @@ EnemyHandler.IceCream.prototype.playerUpdate = function (player, game, bullets) 
             this.children[i].playerUpdate(player);
     }
 
-    game.physics.arcade.collide(player, this.children, playerCollide);
+    game.physics.arcade.collide(player, this.children, this.playerCollide);
 
     game.physics.arcade.collide(bullets, this.children, bulletsCollide);
 };
 
-function playerCollide(player, enemy) {
+EnemyHandler.IceCream.prototype.damage = function (game) {
+    for (var i = 0; i < this.children.length; i++) {
+        if (this.children[i].exists)
+            this.children[i].damage(game);
+    }
+};
+
+EnemyHandler.IceCream.prototype.playerCollide = function (player, enemy) {
   console.log('enemyHandler->playerCollide: OUCH');
   enemy.kill();
+
 };
 
 function bulletsCollide(bullet, enemy) {
