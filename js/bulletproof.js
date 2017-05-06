@@ -75,6 +75,7 @@ PhaserGame.prototype = {
         this.physics.arcade.enable(this.player);
 
         this.player.body.collideWorldBounds = true;
+        this.player.anchor.set(0.5);
 
         this.weaponName = this.add.bitmapText(8, 364, 'shmupfont', "ENTER = Next Weapon", 24);
 
