@@ -167,7 +167,7 @@ PhaserGame.prototype = {
         if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown)
             this.weapons[this.currentWeapon].fire(this.player);
 
-        this.enemyHandler.playerUpdate(this.player);
+        this.enemyHandler.playerUpdate(this.player, game);
 
     }
 };
