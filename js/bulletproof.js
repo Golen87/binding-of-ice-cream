@@ -13,6 +13,8 @@ var PhaserGame = function () {
     this.currentWeapon = 0;
     this.weaponName = null;
 
+    this.enemyHandler = null;
+
 };
 
 PhaserGame.prototype = {
@@ -41,6 +43,8 @@ PhaserGame.prototype = {
         {
             this.load.image('bullet' + i, 'steal_like_an_artist/assets/bullet' + i + '.png');
         }
+
+        this.load.image('enemy', 'img/enemy.png');
 
         //  Note: Graphics are not for use in any commercial project
 
@@ -78,6 +82,9 @@ PhaserGame.prototype = {
 
         this.weaponName = this.add.bitmapText(8, 364, 'shmupfont', "ENTER = Next Weapon", 24);
 
+        this.enemyHandler = new EnemyHandler.IceCream(this.game);
+        this.enemyHandler.visible = true;
+
         //  Cursor keys to fly + space to fire
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -86,6 +93,13 @@ PhaserGame.prototype = {
         var changeKey = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         changeKey.onDown.add(this.nextWeapon, this);
 
+        var spawnKey = this.input.keyboard.addKey(Phaser.Keyboard.C);
+        spawnKey.onDown.add(this.spawnEnemy, this);
+
+    },
+
+    spawnEnemy: function () {
+        this.enemyHandler.spawn(100, 100);
     },
 
     nextWeapon: function () {
