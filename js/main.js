@@ -88,7 +88,7 @@ PhaserGame.prototype = {
         this.player.scale.y = 0.4;
 
         this.player.animations.add('left', [0,1,2,3,4,5], 10, true);
-        this.player.animations.add('right', [0,1,2,3,4,5], 10, true);
+        this.player.animations.add('right', [0,10,11,12,13,14], 10, true);
         this.player.animations.add('down', [0,6,7,6,0,8,9,8], 10, true);
         this.player.animations.add('up', [0,8,9,8,0,6,7,6], 10, true);
         //this.player.reset(400, 300);
