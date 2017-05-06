@@ -36,7 +36,6 @@ PhaserGame.prototype = {
 
         this.load.image('background', 'img/background.png');
         this.load.image('foreground', 'steal_like_an_artist/assets/fore.png');
-        //this.load.image('player', 'steal_like_an_artist/assets/ship.png');
         this.load.spritesheet('player', 'img/front.png', 133, 160);
         this.load.bitmapFont('shmupfont', 'steal_like_an_artist/assets/shmupfont.png', 'steal_like_an_artist/assets/shmupfont.xml');
 
@@ -75,18 +74,20 @@ PhaserGame.prototype = {
             this.weapons[i].visible = false;
         }
 
-        this.character = new Player(this.game);
+        //this.player = new Player(this.game, 400, 300);
 
-        this.player = this.add.sprite(64, 200, 'player');
+        this.player = this.add.sprite(400, 300, 'player');
 
         this.physics.arcade.enable(this.player);
 
         this.player.body.collideWorldBounds = true;
-        this.player.anchor.set(0.5);
+        //this.player.anchor.set(0.5);
         this.player.scale.x = 0.6;
         this.player.scale.y = 0.6;
 
         this.player.animations.add('left', [0, 1, 2, 3, 4, 5]);
+        //this.player.reset(400, 300);
+        //this.player.scale.set(1);
 
         this.weaponName = this.add.bitmapText(8, 564, 'shmupfont', "Binding of ice-ac", 24);
 
