@@ -104,7 +104,6 @@ PhaserGame.prototype = {
 
         var spawnKey = this.input.keyboard.addKey(Phaser.Keyboard.C);
         spawnKey.onDown.add(this.spawnEnemy, this);
-
     },
 
     spawnEnemy: function () {
@@ -167,7 +166,9 @@ PhaserGame.prototype = {
         if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown)
             this.weapons[this.currentWeapon].fire(this.player);
 
-        this.enemyHandler.playerUpdate(this.player, game);
+        this.enemyHandler.playerUpdate(this.player, game, this.weapons[this.currentWeapon].children);
+
+    },
 
     }
 };
