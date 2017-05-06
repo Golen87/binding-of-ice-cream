@@ -25,6 +25,8 @@ PhaserGame.prototype = {
 
         this.physics.startSystem(Phaser.Physics.ARCADE);
 
+        this.game.time.advancedTiming = true;
+
     },
 
     preload: function () {
@@ -168,6 +170,8 @@ PhaserGame.prototype = {
             this.weapons[this.currentWeapon].fire(this.player);
 
         this.enemyHandler.playerUpdate(this.player);
+
+        this.game.debug.text(game.time.fps, 0, 12, '#ff0000');
 
     }
 };
