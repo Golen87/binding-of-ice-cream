@@ -76,7 +76,7 @@ PhaserGame.prototype = {
             this.weapons[i].visible = false;
         }
 
-        //this.player = new Player(this.game, 400, 300);
+        this.player_1 = new Player(this.game, 400, 300);
 
         this.player = this.add.sprite(400, 300, 'player');
 
@@ -179,7 +179,10 @@ PhaserGame.prototype = {
 
     },
 
-        this.game.debug.text(game.time.fps, 0, 12, '#ff0000');
 
+    render: function() {
+       //game.debug.inputInfo(32, 32);
+       //game.debug.pointer( game.input.activePointer );
+       game.debug.text(game.time.fps, 0, 12, '#ff0000');
     }
 };
