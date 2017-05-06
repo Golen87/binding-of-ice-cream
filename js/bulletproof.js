@@ -136,28 +136,20 @@ PhaserGame.prototype = {
         this.player.body.velocity.set(0);
         this.player.rotation = this.physics.arcade.angleToPointer(this.player);
 
+        this.player.body.velocity.x = 0;
         if (this.cursors.left.isDown || this.input.keyboard.isDown(Phaser.Keyboard.A))
-        {
-            this.player.body.velocity.x = -this.speed;
-        }
-        else if (this.cursors.right.isDown || this.input.keyboard.isDown(Phaser.Keyboard.D))
-        {
-            this.player.body.velocity.x = this.speed;
-        }
+            this.player.body.velocity.x -= this.speed;
+        if (this.cursors.right.isDown || this.input.keyboard.isDown(Phaser.Keyboard.D))
+            this.player.body.velocity.x += this.speed;
 
+        this.player.body.velocity.y = 0;
         if (this.cursors.up.isDown || this.input.keyboard.isDown(Phaser.Keyboard.W))
-        {
-            this.player.body.velocity.y = -this.speed;
-        }
-        else if (this.cursors.down.isDown || this.input.keyboard.isDown(Phaser.Keyboard.S))
-        {
-            this.player.body.velocity.y = this.speed;
-        }
+            this.player.body.velocity.y -= this.speed;
+        if (this.cursors.down.isDown || this.input.keyboard.isDown(Phaser.Keyboard.S))
+            this.player.body.velocity.y += this.speed;
 
         if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown)
-        {
             this.weapons[this.currentWeapon].fire(this.player);
-        }
 
     }
 };
