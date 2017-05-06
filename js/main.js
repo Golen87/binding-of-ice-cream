@@ -7,7 +7,7 @@ var PhaserGame = function () {
 
     this.player = null;
     this.cursors = null;
-    this.speed = 300;
+    this.speed = 40;
 
     this.weapons = [];
     this.currentWeapon = 0;
@@ -87,7 +87,10 @@ PhaserGame.prototype = {
         this.player.scale.x = 0.4;
         this.player.scale.y = 0.4;
 
-        this.player.animations.add('left', [0, 1, 2, 3, 4, 5]);
+        this.player.animations.add('left', [0,1,2,3,4,5], 10, true);
+        this.player.animations.add('right', [0,1,2,3,4,5], 10, true);
+        this.player.animations.add('down', [0,6,7,6,0,8,9,8], 10, true);
+        this.player.animations.add('up', [0,8,9,8,0,6,7,6], 10, true);
         //this.player.reset(400, 300);
         //this.player.scale.set(1);
 
@@ -160,27 +163,30 @@ PhaserGame.prototype = {
 
     update: function () {
 
-        this.player.body.velocity.set(0);
-        //this.player.rotation = this.physics.arcade.angleToPointer(this.player);
+        var v = this.player.body.velocity;
+        this.player.body.velocity.set( v.x/1.2, v.y/1.2 );
 
-        if (this.cursors.left.isDown || this.input.keyboard.isDown(Phaser.Keyboard.A)) {
-            this.player.body.velocity.x -= this.speed;
-            this.player.animations.play('left', 10, true);
-        }
-        if (this.cursors.right.isDown || this.input.keyboard.isDown(Phaser.Keyboard.D)) {
-            this.player.body.velocity.x += this.speed;
-            this.player.animations.play('left', 10, true);
-        }
-        if (this.cursors.up.isDown || this.input.keyboard.isDown(Phaser.Keyboard.W)) {
-            this.player.body.velocity.y -= this.speed;
-            this.player.animations.play('left', 10, true);
-        }
-        if (this.cursors.down.isDown || this.input.keyboard.isDown(Phaser.Keyboard.S)) {
-            this.player.body.velocity.y += this.speed;
-            this.player.animations.play('left', 10, true);
-        }
+        var dv = new Phaser.Point(0,0);
+        if (this.cursors.left.isDown || this.input.keyboard.isDown(Phaser.Keyboard.A))
+            dv.x -= this.speed;
+        if (this.cursors.right.isDown || this.input.keyboard.isDown(Phaser.Keyboard.D))
+            dv.x += this.speed;
+        if (this.cursors.up.isDown || this.input.keyboard.isDown(Phaser.Keyboard.W))
+            dv.y -= this.speed;
+        if (this.cursors.down.isDown || this.input.keyboard.isDown(Phaser.Keyboard.S))
+            dv.y += this.speed;
 
-        if (this.player.body.velocity.x == 0 && this.player.body.velocity.y == 0)
+        this.player.body.velocity.set(this.player.body.velocity.x + dv.x, this.player.body.velocity.y + dv.y);
+
+        if (dv.x > 0)
+            this.player.animations.play('right');
+        else if (dv.x < 0)
+            this.player.animations.play('left');
+        else if (dv.y > 0)
+            this.player.animations.play('down');
+        else if (dv.y < 0)
+            this.player.animations.play('up');
+        else
             this.player.animations.stop(null, true);
 
         if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown)
