@@ -19,10 +19,7 @@ var Enemy = function (game, key) {
 Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
 
-Enemy.prototype.spawn = function (x, y, angle, speed, gx, gy) {
-
-    gx = gx || 0;
-    gy = gy || 0;
+Enemy.prototype.spawn = function (x, y, angle, speed) {
 
     this.reset(x, y);
     this.scale.set(1);
@@ -30,22 +27,18 @@ Enemy.prototype.spawn = function (x, y, angle, speed, gx, gy) {
     this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
 
     this.angle = angle;
-
-    this.body.gravity.set(gx, gy);
+    this.speed = speed;
 
 };
 
 Enemy.prototype.update = function () {
 
-    if (this.tracking)
-    {
-        this.rotation = Math.atan2(this.body.velocity.y, this.body.velocity.x);
-    }
+};
 
-    if (this.scaleSpeed > 0)
-    {
-        this.scale.x += this.scaleSpeed;
-        this.scale.y += this.scaleSpeed;
-    }
+Enemy.prototype.playerUpdate = function (player) {
+
+    var angle = pointAngle(this.x, this.y, player.x, player.y);
+
+    this.game.physics.arcade.velocityFromAngle(angle, this.speed, this.body.velocity);
 
 };
