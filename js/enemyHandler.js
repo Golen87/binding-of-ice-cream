@@ -58,5 +58,17 @@ function playerCollide(player, enemy) {
 
 function bulletsCollide(bullet, enemy) {
   console.log('enemyHandler->bulletsCollide: PEW PEW PEW');
-  enemy.kill();
+  bullet.kill();
+
+  //enemy.damage(); <-- not working, wtf?
+  if (! enemy.damageAnimation) {
+    enemy.health -= 1;
+    enemy.damageAnimation = true;
+    enemy.animations.play('hurt');
+    game.time.events.add(Phaser.Timer.SECOND * 0.5, enemy.recover, enemy);
+  }
+
+  if (enemy.health < 0) {
+    enemy.kill();
+  }
 };
