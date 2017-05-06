@@ -49,7 +49,6 @@ PhaserGame.prototype = {
     create: function () {
 
         this.background = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'background');
-        this.background.autoScroll(-40, 0);
 
         this.weapons.push(new Weapon.SingleBullet(this.game));
         this.weapons.push(new Weapon.FrontAndBack(this.game));
@@ -78,7 +77,6 @@ PhaserGame.prototype = {
         this.player.body.collideWorldBounds = true;
 
         this.foreground = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'foreground');
-        this.foreground.autoScroll(-60, 0);
 
         this.weaponName = this.add.bitmapText(8, 364, 'shmupfont', "ENTER = Next Weapon", 24);
 
