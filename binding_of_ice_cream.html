@@ -4,9 +4,11 @@
     <title>Bullet Pool</title>
     <meta charset="utf-8">
     <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
-    <script src="js/bullet.js"></script>
-    <script src="js/weapon.js"></script>
-    <script src="js/bulletproof.js"></script>
+    <script src="./js/bullet.js"></script>
+    <script src="./js/weapon.js"></script>
+    <script src="./js/enemy.js"></script>
+    <script src="./js/enemyHandler.js"></script>
+    <script src="./js/bulletproof.js"></script>
 </head>
 <body>
 
@@ -14,7 +16,7 @@
 
     <script type="text/javascript">
 
-      var game = new Phaser.Game(640, 400, Phaser.AUTO, 'game');
+      var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
       game.state.add('Game', PhaserGame, true);
 
     </script>

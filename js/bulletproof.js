@@ -13,6 +13,8 @@ var PhaserGame = function () {
     this.currentWeapon = 0;
     this.weaponName = null;
 
+    this.enemyHandler = null;
+
 };
 
 PhaserGame.prototype = {
@@ -42,6 +44,8 @@ PhaserGame.prototype = {
             this.load.image('bullet' + i, 'steal_like_an_artist/assets/bullet' + i + '.png');
         }
 
+        this.load.image('enemy', 'img/enemy.png');
+
         //  Note: Graphics are not for use in any commercial project
 
     },
@@ -49,7 +53,6 @@ PhaserGame.prototype = {
     create: function () {
 
         this.background = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'background');
-        this.background.autoScroll(-40, 0);
 
         this.weapons.push(new Weapon.SingleBullet(this.game));
         this.weapons.push(new Weapon.FrontAndBack(this.game));
@@ -76,11 +79,12 @@ PhaserGame.prototype = {
         this.physics.arcade.enable(this.player);
 
         this.player.body.collideWorldBounds = true;
+        this.player.anchor.set(0.5);
 
-        this.foreground = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'foreground');
-        this.foreground.autoScroll(-60, 0);
+        this.weaponName = this.add.bitmapText(8, 564, 'shmupfont', "ENTER = Next Weapon", 24);
 
-        this.weaponName = this.add.bitmapText(8, 364, 'shmupfont', "ENTER = Next Weapon", 24);
+        this.enemyHandler = new EnemyHandler.IceCream(this.game);
+        this.enemyHandler.visible = true;
 
         //  Cursor keys to fly + space to fire
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -90,6 +94,13 @@ PhaserGame.prototype = {
         var changeKey = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         changeKey.onDown.add(this.nextWeapon, this);
 
+        var spawnKey = this.input.keyboard.addKey(Phaser.Keyboard.C);
+        spawnKey.onDown.add(this.spawnEnemy, this);
+
+    },
+
+    spawnEnemy: function () {
+        this.enemyHandler.spawn(100, 100);
     },
 
     nextWeapon: function () {
@@ -123,29 +134,22 @@ PhaserGame.prototype = {
     update: function () {
 
         this.player.body.velocity.set(0);
+        this.player.rotation = this.physics.arcade.angleToPointer(this.player);
 
-        if (this.cursors.left.isDown)
-        {
-            this.player.body.velocity.x = -this.speed;
-        }
-        else if (this.cursors.right.isDown)
-        {
-            this.player.body.velocity.x = this.speed;
-        }
+        this.player.body.velocity.x = 0;
+        if (this.cursors.left.isDown || this.input.keyboard.isDown(Phaser.Keyboard.A))
+            this.player.body.velocity.x -= this.speed;
+        if (this.cursors.right.isDown || this.input.keyboard.isDown(Phaser.Keyboard.D))
+            this.player.body.velocity.x += this.speed;
 
-        if (this.cursors.up.isDown)
-        {
-            this.player.body.velocity.y = -this.speed;
-        }
-        else if (this.cursors.down.isDown)
-        {
-            this.player.body.velocity.y = this.speed;
-        }
+        this.player.body.velocity.y = 0;
+        if (this.cursors.up.isDown || this.input.keyboard.isDown(Phaser.Keyboard.W))
+            this.player.body.velocity.y -= this.speed;
+        if (this.cursors.down.isDown || this.input.keyboard.isDown(Phaser.Keyboard.S))
+            this.player.body.velocity.y += this.speed;
 
-        if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
-        {
+        if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown)
             this.weapons[this.currentWeapon].fire(this.player);
-        }
 
     }
 };
