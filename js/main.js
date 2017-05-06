@@ -97,7 +97,10 @@ PhaserGame.prototype = {
         this.enemyHandler.visible = true;
 
         // spawn enemies regularly
-        game.time.events.repeat(Phaser.Timer.SECOND * 3, 10, this.spawnEnemy, this);
+        game.time.events.loop(Phaser.Timer.SECOND * 2, this.spawnEnemy, this);
+
+        // Span only ten enemies
+        //game.time.events.repeat(Phaser.Timer.SECOND * 3, 10, this.spawnEnemy, this);
 
         //  Cursor keys to move + space/mouse to fire
         this.cursors = this.input.keyboard.createCursorKeys();
