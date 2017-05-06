@@ -50,7 +50,13 @@ PhaserGame.prototype = {
         this.load.spritesheet('gluttony', 'img/gluttony.png', 200, 200);
         this.load.spritesheet('wrath', 'img/wrath.png', 200, 200);
 
-        //  Note: Graphics are not for use in any commercial project
+
+        // Particles
+
+        for (var i = 1; i <= 5; i++)
+        {
+            this.game.load.image('cloud' + i, 'img/cloud' + i + '.png');
+        }
 
     },
 
@@ -117,6 +123,40 @@ PhaserGame.prototype = {
 
         var spawnKey = this.input.keyboard.addKey(Phaser.Keyboard.C);
         spawnKey.onDown.add(this.spawnEnemy, this);
+
+
+        // Particles
+
+        this.emitter = game.add.emitter(0, 0, 100);
+
+        this.emitter.makeParticles(['cloud1', 'cloud2', 'cloud3', 'cloud4', 'cloud5']);
+        this.emitter.gravity = 0;
+        this.emitter.width = 50;
+        this.emitter.height = 50;
+        this.emitter.minRotation = -20;
+        this.emitter.maxRotation = 20;
+        this.emitter.maxParticleScale = 1.7;
+        this.emitter.minParticleScale = 1.0;
+        this.emitter.setXSpeed(-50, 50);
+        this.emitter.setYSpeed(-50, 50);
+        this.emitter.setScale(1, 0.5, 1, 0.5, 2000);
+        this.emitter.setAlpha(1, 0, 2000);
+
+        this.game.input.onDown.add(this.particleBurst, this);
+
+    },
+
+    particleBurst: function(pointer) {
+
+        //  Position the emitter where the mouse/touch event was
+        this.emitter.x = pointer.x;
+        this.emitter.y = pointer.y;
+
+        //  The first parameter sets the effect to "explode" which means all particles are emitted at once
+        //  The second gives each particle a 2000ms lifespan
+        //  The third is ignored when using burst/explode mode
+        //  The final parameter (10) is how many particles will be emitted in this single burst
+        this.emitter.start(true, 2000, null, 10);
 
     },
 
