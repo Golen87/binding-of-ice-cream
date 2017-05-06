@@ -32,7 +32,7 @@ Enemy.prototype.spawn = function (x, y, angle, speed) {
     this.hp = 10;
 
     this.reset(x, y);
-    this.scale.set(0.6);
+    this.scale.set(0.4);
 
     this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
 
