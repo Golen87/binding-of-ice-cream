@@ -46,7 +46,7 @@ PhaserGame.prototype = {
             this.load.image('bullet' + i, 'steal_like_an_artist/assets/bullet' + i + '.png');
         }
 
-        this.load.image('enemy', 'img/enemy.png');
+        this.load.spritesheet('enemy', 'img/greed.png', 117, 189);
 
         //  Note: Graphics are not for use in any commercial project
 
@@ -83,7 +83,7 @@ PhaserGame.prototype = {
         this.physics.arcade.enable(this.player);
 
         this.player.body.collideWorldBounds = true;
-        //this.player.anchor.set(0.5);
+        this.player.anchor.set(0.5);
         this.player.scale.x = 0.6;
         this.player.scale.y = 0.6;
 
@@ -91,7 +91,7 @@ PhaserGame.prototype = {
         //this.player.reset(400, 300);
         //this.player.scale.set(1);
 
-        this.weaponName = this.add.bitmapText(8, 564, 'shmupfont', "Binding of ice-ac", 24);
+        this.weaponName = this.add.bitmapText(8, 564, 'shmupfont', "[C] Spawn  [V] Damage", 24);
 
         this.enemyHandler = new EnemyHandler.IceCream(this.game);
         this.enemyHandler.visible = true;
@@ -107,10 +107,17 @@ PhaserGame.prototype = {
         var spawnKey = this.input.keyboard.addKey(Phaser.Keyboard.C);
         spawnKey.onDown.add(this.spawnEnemy, this);
 
+        var spawnKey = this.input.keyboard.addKey(Phaser.Keyboard.V);
+        spawnKey.onDown.add(this.damageEnemy, this);
+
     },
 
     spawnEnemy: function () {
-        this.enemyHandler.spawn(100, 100);
+        this.enemyHandler.spawn(200, 200);
+    },
+
+    damageEnemy: function () {
+        this.enemyHandler.damage(this.game);
     },
 
     nextWeapon: function () {

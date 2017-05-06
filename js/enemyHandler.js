@@ -8,7 +8,7 @@ EnemyHandler.IceCream = function (game) {
 
     Phaser.Group.call(this, game, game.world, 'Single Enemy', false, true, Phaser.Physics.ARCADE);
 
-    this.enemySpeed = 100;
+    this.enemySpeed = 50;
 
     // Max limit of 64 enemies
     for (var i = 0; i < 64; i++)
@@ -38,5 +38,11 @@ EnemyHandler.IceCream.prototype.playerUpdate = function (player) {
         if (this.children[i].exists)
             this.children[i].playerUpdate(player);
     }
+};
 
+EnemyHandler.IceCream.prototype.damage = function (game) {
+    for (var i = 0; i < this.children.length; i++) {
+        if (this.children[i].exists)
+            this.children[i].damage(game);
+    }
 };
