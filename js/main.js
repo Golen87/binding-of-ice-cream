@@ -75,6 +75,8 @@ PhaserGame.prototype = {
             this.weapons[i].visible = false;
         }
 
+        this.character = new Player(this.game);
+
         this.player = this.add.sprite(64, 200, 'player');
 
         this.physics.arcade.enable(this.player);
