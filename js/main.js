@@ -476,6 +476,8 @@ PhaserGame.prototype = {
 
       this.player.hp = 3;
       this.player.score = 0;
+      this.spawnTimer = 0;
+      this.spawnCount = 0.9;
       this.enemyHandler.award_points = 0;
       this.showScore(0);
       this.player.visible = true;
