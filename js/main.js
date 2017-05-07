@@ -94,6 +94,9 @@ PhaserGame.prototype = {
         game.load.audio('select', 'sounds/select.ogg');
         game.load.audio('nu', 'sounds/nu.ogg');
 
+        // music theme
+        game.load.audio('music', ['sounds/music.ogg', 'sounds/music.ogg']);
+
     },
 
     create: function () {
@@ -229,6 +232,11 @@ PhaserGame.prototype = {
         this.sounds.player_was_hit = game.add.audio('nu');
         this.sounds.enemy_hit = game.add.audio('lazer');
         this.sounds.player_reborn = game.add.audio('select');
+
+        var background_music = this.game.add.audio('music'); //new Phaser.Sound(this.game, 'music', 1, true);
+        background_music.volume = 0.6;
+        background_music.loop = true;
+        setTimeout(function(){background_music.play()},100);
 
     },
 
