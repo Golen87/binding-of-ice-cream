@@ -97,7 +97,7 @@ PhaserGame.prototype = {
         game.load.audio('nu', 'sounds/nu.ogg');
 
         // music theme
-        game.load.audio('music', ['sounds/music.ogg', 'sounds/music.ogg']);
+        //game.load.audio('music', ['sounds/music.ogg', 'sounds/music.ogg']);
 
     },
 
