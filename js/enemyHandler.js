@@ -55,7 +55,6 @@ EnemyHandler.IceCream.prototype.playerUpdate = function (player, game, bullets) 
 };
 
 EnemyHandler.IceCream.prototype.playerCollide = function (player, enemy) {
-  console.log('enemyHandler->playerCollide: OUCH');
   enemy.kill();
   this.shake_required = true;
 

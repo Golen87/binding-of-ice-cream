@@ -3,7 +3,7 @@ var Enemy = function (game, key) {
 
     Phaser.Sprite.call(this, game, 0, 0, key);
 
-    this.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+    //this.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
 
     this.anchor.set(0.5);
 
@@ -38,7 +38,9 @@ Enemy.prototype.spawn = function (x, y, angle, speed) {
     this.hp = 10;
 
     this.reset(x, y);
-    this.scale.set(0.5);
+    this.scale.set(0.6);
+    if (this.key == "sloth" || this.key == "wrath" || this.key == "gluttony")
+        this.scale.set(0.5);
 
     this.angle = angle;
     this.speed = speed;
