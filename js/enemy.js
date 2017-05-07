@@ -66,6 +66,9 @@ Enemy.prototype.spawn = function (x, y, angle, speed) {
         this.animations.play('idle');
         this.anchor.set(0.5);
     }
+    else if (this.body.sprite.key == "sloth") {
+        this.speed = 1;
+    }
     else {
         this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
     }

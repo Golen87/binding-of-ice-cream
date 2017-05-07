@@ -27,6 +27,14 @@ EnemyHandler.IceCream = function (game) {
 EnemyHandler.IceCream.prototype = Object.create(Phaser.Group.prototype);
 EnemyHandler.IceCream.prototype.constructor = EnemyHandler.IceCream;
 
+EnemyHandler.IceCream.prototype.checkAllDead = function () {
+    for (var i = 0; i < this.children.length; i++) {
+        if (this.children[i].exists)
+            return false;
+    }
+    return true;
+}
+
 EnemyHandler.IceCream.prototype.spawn = function (sx, sy) {
     var x = sx;
     var y = sy;
