@@ -8,7 +8,8 @@ var PhaserGame = function () {
     this.background = null;
     this.foreground = null;
 
-    this.points = 0;
+    this.high_score = 0;
+
     this.player = null;
     this.cursors = null;
     this.speed = 40;
@@ -17,6 +18,7 @@ var PhaserGame = function () {
     this.currentWeapon = 0;
     this.weaponName = null;
     this.scoreInfo = null;
+    this.highScoreInfo = null;
 
     this.enemyHandler = null;
 
@@ -233,12 +235,20 @@ PhaserGame.prototype = {
         this.sounds.enemy_hit = game.add.audio('lazer');
         this.sounds.player_reborn = game.add.audio('select');
 
+        //this.sounds.music = game.add.audio('music'); // new Phaser.Sound(game, 'music', 1, true);
+        //this.sounds.music.loop = true;
+        //this.sounds.music.play();
+
         var background_music = this.game.add.audio('music'); //new Phaser.Sound(this.game, 'music', 1, true);
         background_music.volume = 0.6;
         background_music.loop = true;
         setTimeout(function(){background_music.play()},100);
 
     },
+
+    //start_music: function() {
+        //this.sounds.music.loopFull(0.6);
+    //},
 
     cloudBurst: function(pointer) {
 
@@ -270,7 +280,7 @@ PhaserGame.prototype = {
     },
 
     testCallback: function() {
-        this.sounds.pew.play();
+        this.showHighScore(this.high_score);
     },
 
     showScore: function(score) {
@@ -282,6 +292,21 @@ PhaserGame.prototype = {
            this.scoreInfo.strokeThickness = 2;
         }
         this.scoreInfo.text = "Score: " + score;
+        if (score > this.high_score) {
+           this.high_score = score;
+           this.showHighScore();
+        }
+    },
+
+    showHighScore: function(highscore) {
+        if (this.highScoreInfo == null) {
+           this.highScoreInfo = this.game.add.text(8, 58, "HighScore: 0");
+           this.highScoreInfo.font = 'Fontdiner Swanky';
+           this.highScoreInfo.fill = '#ee0000';
+           this.highScoreInfo.stroke = '#000000';
+           this.highScoreInfo.strokeThickness = 2;
+        }
+        this.highScoreInfo.text = "HighScore: " + this.high_score;
     },
 
     spawnEnemy: function () {
@@ -437,6 +462,8 @@ PhaserGame.prototype = {
 
       this.player.hp = 5;
       this.player.score = 0;
+      this.enemyHandler.award_points = 0;
+      this.showScore(0);
       this.player.visible = true;
       this.weaponName.text = START_TEXT;
 
@@ -460,6 +487,7 @@ PhaserGame.prototype = {
     render: function() {
        //game.debug.inputInfo(32, 32);
        //game.debug.pointer( game.input.activePointer );
-       game.debug.text(game.time.fps, 0, 12, '#ff0000');
+       //game.debug.text(game.time.fps, 0, 12, '#ff0000');
+       //game.debug.soundInfo(this.sounds.music, 20, 32);
     }
 };
