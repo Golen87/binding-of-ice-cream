@@ -52,6 +52,7 @@ PhaserGame.prototype = {
         this.load.spritesheet('wrath', 'img/wrath.png', 200, 200);
         this.load.spritesheet('lust', 'img/lust.png', 160, 200);
         this.load.spritesheet('sloth', 'img/sloth.png', 195, 125);
+        this.load.spritesheet('pride', 'img/pride.png', 160, 160);
 
 
         // Particles
@@ -177,7 +178,6 @@ PhaserGame.prototype = {
     },
 
     testCallback: function() {
-        console.log("Sandbox/Debug callback was triggered");
         this.hideHealth();
     },
 
