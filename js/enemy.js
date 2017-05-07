@@ -59,8 +59,8 @@ Enemy.prototype.spawn = function (x, y, angle, speed) {
         this.scale.set(0.6);
     }
     else if (this.body.sprite.key == "pride") {
-        this.timer = 20;
-        this.speed = 180;
+        this.timer = 40;
+        this.speed = 200;
         this.state = 'idle';
         this.animations.play('idle');
         this.anchor.set(0.5);
@@ -154,7 +154,7 @@ Enemy.prototype.playerUpdate = function (player) {
             if (this.timer <= 0) {
                 this.state = 'idle';
                 this.animations.play('idle');
-                this.timer = 30;
+                this.timer = 40;
             }
             this.game.physics.arcade.velocityFromAngle(0, 0, this.body.velocity);
         }
