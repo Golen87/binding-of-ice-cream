@@ -70,7 +70,7 @@ Enemy.prototype.spawn = function (x, y, angle, speed) {
         this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
     }
 
-    PhaserGame.prototype.particleBurst(this);
+    PhaserGame.prototype.cloudBurst(this);
 
 };
 
@@ -117,7 +117,6 @@ Enemy.prototype.playerUpdate = function (player) {
         }
         else if (this.state == "jump") {
             this.anchor.y = 0.5 + 0.4 * Math.pow((20 - this.timer) / 20, 0.5);
-            console.log(this.anchor.y);
             if (this.timer <= 0) {
                 this.state = 'fall';
                 this.animations.play('fall');
@@ -128,7 +127,6 @@ Enemy.prototype.playerUpdate = function (player) {
         }
         else if (this.state == "fall") {
             this.anchor.y = 0.5 + 0.4 * Math.pow((this.timer) / 20, 0.5);
-            console.log(this.anchor.y);
             if (this.timer <= 0) {
                 this.state = 'recover';
                 this.animations.play('prepare');
@@ -167,7 +165,8 @@ Enemy.prototype.damage = function () {
 
     if (this.hp < 0) {
         this.kill();
-        PhaserGame.prototype.particleBurst(this);
+        PhaserGame.prototype.cloudBurst(this);
+        PhaserGame.prototype.enemyBurst(this, this.body.sprite.key);
     }
 
 };

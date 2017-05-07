@@ -28,7 +28,6 @@ Weapon.SingleBullet.prototype.fire = function (source) {
 
     if (this.game.time.time < this.nextFire) { return; }
 
-    console.log(source);
     var x = source.x;
     var y = source.y;
 
