@@ -13,6 +13,7 @@ EnemyHandler.IceCream = function (game) {
     // Max limit of 64 enemies
     for (var i = 0; i < 16; i++)
     {
+        this.add(new Enemy(game, 'envy'), true);
         this.add(new Enemy(game, 'gluttony'), true);
         this.add(new Enemy(game, 'pride'), true);
         this.add(new Enemy(game, 'wrath'), true);

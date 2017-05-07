@@ -53,6 +53,7 @@ PhaserGame.prototype = {
         this.load.spritesheet('lust', 'img/lust.png', 160, 200);
         this.load.spritesheet('sloth', 'img/sloth.png', 195, 125);
         this.load.spritesheet('pride', 'img/pride.png', 160, 160);
+        this.load.spritesheet('envy', 'img/envy.png', 180, 160);
 
 
         // Particles

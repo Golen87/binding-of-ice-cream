@@ -23,6 +23,10 @@ var Enemy = function (game, key) {
         this.state = 'idle';
         this.timer = 0;
     }
+    else if (key == "envy") {
+        this.animations.add('idle', [0,1,2,1], 4, true);
+        this.animations.add('hurt', [3,4], 16, true);
+    }
     else {
         this.animations.add('idle', [0,1], 4, true);
         this.animations.add('hurt', [2,3], 16, true);
