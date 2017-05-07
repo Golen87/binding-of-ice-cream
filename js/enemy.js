@@ -43,12 +43,12 @@ Enemy.prototype.spawn = function (x, y, angle, speed) {
         this.scale.set(0.5);
 
     this.angle = angle;
-    this.speed = speed;
+    this.speed = 50;
 
     if (this.body.sprite.key == "gluttony") {
         this.dx = 2;
         this.dy = 1;
-        //this.game.physics.arcade.velocityFromAngle(pointAngle(0,0,2,1), speed, this.body.velocity);
+        this.speed = 150;
     }
     else {
         this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
@@ -68,8 +68,6 @@ Enemy.prototype.playerUpdate = function (player) {
     var angle = pointAngle(this.x, this.y, player.x, player.y);
 
     if (this.body.sprite.key == "gluttony") {
-        this.body.x += this.dx;
-        this.body.y += this.dy;
         if (this.body.x > game.width - this.body.width * 1.2 && this.dx > 0)
             this.dx *= -1;
         if (this.body.x < this.body.width * 0.5 && this.dx < 0)
@@ -79,6 +77,7 @@ Enemy.prototype.playerUpdate = function (player) {
         if (this.body.y < this.body.height * 0.1 && this.dy < 0)
             this.dy *= -1;
 
+        this.game.physics.arcade.velocityFromAngle(pointAngle(0, 0, this.dx, this.dy), this.speed, this.body.velocity);
         this.rotation += this.dx / 40;
     }
     else {

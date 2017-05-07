@@ -108,10 +108,10 @@ PhaserGame.prototype = {
         this.player.yScale = 0.4;
         this.player.scale.set(this.player.yScale);
 
-        this.player.animations.add('left', [0,1,2,3,4,5], 10, true);
-        this.player.animations.add('right', [0,10,11,12,13,14], 10, true);
-        this.player.animations.add('down', [0,6,7,6,0,8,9,8], 10, true);
-        this.player.animations.add('up', [0,8,9,8,0,6,7,6], 10, true);
+        this.player.animations.add('left', [1,2,3,4,5,0], 10, true);
+        this.player.animations.add('right', [10,11,12,13,14,0], 10, true);
+        this.player.animations.add('down', [6,7,6,0,8,9,8,0], 10, true);
+        this.player.animations.add('up', [8,9,8,0,6,7,6,0], 10, true);
         //this.player.reset(400, 300);
         //this.player.scale.set(1);
 
@@ -141,6 +141,13 @@ PhaserGame.prototype = {
         var testKey = this.input.keyboard.addKey(Phaser.Keyboard.G);
         testKey.onDown.add(this.testCallback, this);
 
+        // restart the game when the player health is = 0
+        var spacebarKey = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        spacebarKey.onDown.add(this.conditional_restart, this);
+
+        // restart the game oavsett av spelare health
+        var restartKey = this.input.keyboard.addKey(Phaser.Keyboard.N);
+        restartKey.onDown.add(this.restart, this);
 
         // Particles
 
@@ -285,7 +292,7 @@ PhaserGame.prototype = {
             this.player.hp -= 1;
 
             if (this.player.hp <= 0) {
-                this.weaponName.text = "Game Over - Space to restart";
+                this.weaponName.text = "Game Over - [Space] to restart";
                 this.player.visible = false;
             }
             else {
@@ -294,6 +301,16 @@ PhaserGame.prototype = {
             }
         }
 
+    },
+
+    restart: function() {
+      game.state.start('Game');
+    },
+
+    conditional_restart: function() {
+      if (this.player.hp <= 0) {
+         this.restart();
+      }
     },
 
     shake: function() {
