@@ -72,6 +72,7 @@ Enemy.prototype.damage = function () {
 
     if (this.hp < 0) {
         this.kill();
+        PhaserGame.prototype.particleBurst(this);
     }
 
 };

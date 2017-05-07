@@ -38,6 +38,8 @@ Weapon.SingleBullet.prototype.fire = function (source) {
 
     this.nextFire = this.game.time.time + this.fireRate;
 
+    source.scale.y *= 0.8
+
 };
 
 /////////////////////////////////////////////////////////
@@ -54,7 +56,7 @@ Weapon.FrontAndBack = function (game) {
 
     for (var i = 0; i < 64; i++)
     {
-        this.add(new Bullet(game, 'bullet5'), true);
+        this.add(new Bullet(game, 'eraser2'), true);
     }
 
     return this;
@@ -92,7 +94,7 @@ Weapon.ThreeWay = function (game) {
 
     for (var i = 0; i < 96; i++)
     {
-        this.add(new Bullet(game, 'bullet7'), true);
+        this.add(new Bullet(game, 'eraser3'), true);
     }
 
     return this;
@@ -131,7 +133,7 @@ Weapon.EightWay = function (game) {
 
     for (var i = 0; i < 96; i++)
     {
-        this.add(new Bullet(game, 'bullet5'), true);
+        this.add(new Bullet(game, 'eraser1'), true);
     }
 
     return this;
@@ -175,7 +177,7 @@ Weapon.ScatterShot = function (game) {
 
     for (var i = 0; i < 32; i++)
     {
-        this.add(new Bullet(game, 'bullet5'), true);
+        this.add(new Bullet(game, 'eraser2'), true);
     }
 
     return this;
@@ -212,7 +214,7 @@ Weapon.Beam = function (game) {
 
     for (var i = 0; i < 64; i++)
     {
-        this.add(new Bullet(game, 'bullet11'), true);
+        this.add(new Bullet(game, 'eraser3'), true);
     }
 
     return this;
@@ -249,7 +251,7 @@ Weapon.SplitShot = function (game) {
 
     for (var i = 0; i < 64; i++)
     {
-        this.add(new Bullet(game, 'bullet8'), true);
+        this.add(new Bullet(game, 'eraser1'), true);
     }
 
     return this;
@@ -293,7 +295,7 @@ Weapon.Pattern = function (game) {
 
     for (var i = 0; i < 64; i++)
     {
-        this.add(new Bullet(game, 'bullet4'), true);
+        this.add(new Bullet(game, 'eraser2'), true);
     }
 
     return this;
@@ -337,7 +339,7 @@ Weapon.Rockets = function (game) {
 
     for (var i = 0; i < 32; i++)
     {
-        this.add(new Bullet(game, 'bullet10'), true);
+        this.add(new Bullet(game, 'eraser3'), true);
     }
 
     this.setAll('tracking', true);
@@ -377,7 +379,7 @@ Weapon.ScaleBullet = function (game) {
 
     for (var i = 0; i < 32; i++)
     {
-        this.add(new Bullet(game, 'bullet9'), true);
+        this.add(new Bullet(game, 'eraser1'), true);
     }
 
     this.setAll('scaleSpeed', 0.05);

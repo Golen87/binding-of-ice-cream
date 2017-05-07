@@ -33,20 +33,15 @@ PhaserGame.prototype = {
 
     preload: function () {
 
-        //  We need this because the steal_like_an_artist/assets are on Amazon S3
-        //  Remove the next 2 lines if running locally
-        // this.load.baseURL = 'http://files.phaser.io.s3.amazonaws.com/codingtips/issue007/';
         this.load.crossOrigin = 'anonymous';
 
         this.load.image('background', 'img/background.png');
-        this.load.image('foreground', 'steal_like_an_artist/assets/fore.png');
         this.load.spritesheet('player', 'img/front.png', 133, 160);
-        this.load.bitmapFont('shmupfont', 'steal_like_an_artist/assets/shmupfont.png', 'steal_like_an_artist/assets/shmupfont.xml');
+        this.load.image('heart1', 'img/heart1.png');
+        this.load.image('heart2', 'img/heart2.png');
 
-        for (var i = 1; i <= 11; i++)
-        {
-            this.load.image('bullet' + i, 'steal_like_an_artist/assets/bullet' + i + '.png');
-        }
+        this.load.bitmapFont('font', 'img/font.png', 'img/font.xml');
+
         for (var i = 1; i <= 3; i++)
         {
             this.load.image('eraser' + i, 'img/eraser' + i + '.png');
@@ -92,15 +87,25 @@ PhaserGame.prototype = {
             this.weapons[i].visible = false;
         }
 
-        this.player_1 = new Player(this.game, 400, 300);
+        //this.player_1 = new Player(this.game, 400, 300);
 
         this.player = this.add.sprite(400, 300, 'player');
+        this.player.hp = 5;
+
+        for (var i = -2; i < 3; i++) {
+            var heart = game.make.sprite(40*i, -100, 'heart1');
+            heart.anchor.set(0.5, 0.5);
+            heart.scale.set(0.25);
+            this.player.addChild(heart);
+        }
+        this.hideHealth();
 
         this.physics.arcade.enable(this.player);
 
         this.player.body.collideWorldBounds = true;
         this.player.anchor.set(0.5);
-        this.player.scale.set(0.4);
+        this.player.yScale = 0.4;
+        this.player.scale.set(this.player.yScale);
 
         this.player.animations.add('left', [0,1,2,3,4,5], 10, true);
         this.player.animations.add('right', [0,10,11,12,13,14], 10, true);
@@ -109,7 +114,7 @@ PhaserGame.prototype = {
         //this.player.reset(400, 300);
         //this.player.scale.set(1);
 
-        this.weaponName = this.add.bitmapText(8, 564, 'shmupfont', "[C] Spawn  [V] Damage", 24);
+        this.weaponName = this.add.bitmapText(8, 564, 'font', "Binding Of Ice-Ac", 24);
 
         this.enemyHandler = new EnemyHandler.IceCream(this.game);
         this.enemyHandler.visible = true;
@@ -138,41 +143,42 @@ PhaserGame.prototype = {
 
         // Particles
 
-        this.emitter = game.add.emitter(0, 0, 100);
+        emitter = game.add.emitter(0, 0, 100);
 
-        this.emitter.makeParticles(['cloud1', 'cloud2', 'cloud3', 'cloud4', 'cloud5']);
-        this.emitter.gravity = 0;
-        this.emitter.width = 50;
-        this.emitter.height = 50;
-        this.emitter.minRotation = -20;
-        this.emitter.maxRotation = 20;
-        this.emitter.maxParticleScale = 1.7;
-        this.emitter.minParticleScale = 1.0;
-        this.emitter.setXSpeed(-50, 50);
-        this.emitter.setYSpeed(-50, 50);
-        this.emitter.setScale(1, 0.5, 1, 0.5, 2000);
-        this.emitter.setAlpha(1, 0, 2000);
+        emitter.makeParticles(['cloud1', 'cloud2', 'cloud3', 'cloud4', 'cloud5']);
+        emitter.gravity = 0;
+        emitter.width = 70;
+        emitter.height = 70;
+        emitter.minRotation = -20;
+        emitter.maxRotation = 20;
+        emitter.maxParticleScale = 2.0;
+        emitter.minParticleScale = 1.4;
+        emitter.setXSpeed(-50, 50);
+        emitter.setYSpeed(-50, 50);
+        emitter.setScale(1, 0.5, 1, 0.5, 2000);
+        emitter.setAlpha(1, 0, 2000);
 
-        this.game.input.onDown.add(this.particleBurst, this);
+        //this.game.input.onDown.add(this.particleBurst, this);
 
     },
 
     particleBurst: function(pointer) {
 
         //  Position the emitter where the mouse/touch event was
-        this.emitter.x = pointer.x;
-        this.emitter.y = pointer.y;
+        emitter.x = pointer.x;
+        emitter.y = pointer.y;
 
         //  The first parameter sets the effect to "explode" which means all particles are emitted at once
         //  The second gives each particle a 2000ms lifespan
         //  The third is ignored when using burst/explode mode
         //  The final parameter (10) is how many particles will be emitted in this single burst
-        this.emitter.start(true, 2000, null, 10);
+        emitter.start(true, 2000, null, 15);
 
     },
 
     testCallback: function() {
-      console.log("Sandbox/Debug callback was triggered");
+        console.log("Sandbox/Debug callback was triggered");
+        this.hideHealth();
     },
 
     spawnEnemy: function () {
@@ -180,6 +186,20 @@ PhaserGame.prototype = {
           this.game.rnd.between(0, 800),
           this.game.rnd.between(0, 600)
         );
+    },
+
+    showHealth: function () {
+        for (var i = 0; i < this.player.children.length; i++) {
+            this.player.children[i].visible = true;
+            if (i > this.player.hp - 1)
+                this.player.children[i].loadTexture('heart2', 0);
+        }
+    },
+
+    hideHealth: function () {
+        for (var i = 0; i < this.player.children.length; i++) {
+            this.player.children[i].visible = false;
+        }
     },
 
     nextWeapon: function () {
@@ -252,12 +272,26 @@ PhaserGame.prototype = {
         else
             this.player.animations.stop(null, true);
 
-        if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown)
+        // Fire and bouncing animations
+        if (game.input.activePointer.isDown && this.player.visible)
             this.weapons[this.currentWeapon].fire(this.player);
+        this.player.scale.y = this.player.yScale - (this.player.yScale - this.player.scale.y) * 0.8;
+        this.player.anchor.y = (this.player.scale.y / this.player.yScale) * 0.5;
 
         this.shake_required = this.enemyHandler.playerUpdate(this.player, game, this.weapons[this.currentWeapon].children);
         if (this.shake_required) {
-           this.shake();
+            this.shake();
+
+            this.player.hp -= 1;
+
+            if (this.player.hp <= 0) {
+                this.weaponName.text = "Game Over - Space to restart";
+                this.player.visible = false;
+            }
+            else {
+                this.showHealth();
+                game.time.events.add(Phaser.Timer.SECOND * 1.5, this.hideHealth, this);
+            }
         }
 
     },
