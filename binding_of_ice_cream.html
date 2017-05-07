@@ -28,8 +28,13 @@
     <div id="game"></div>
 
     <script type="text/javascript">
-
+      var WebFontConfig = {
+        google: {
+          families: ['Fontdiner Swanky']
+        }
+      };
       var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+
       game.state.add('Game', PhaserGame, true);
 
     </script>

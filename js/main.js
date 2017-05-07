@@ -5,6 +5,7 @@ var PhaserGame = function () {
     this.background = null;
     this.foreground = null;
 
+    this.points = 0;
     this.player = null;
     this.cursors = null;
     this.speed = 40;
@@ -12,8 +13,11 @@ var PhaserGame = function () {
     this.weapons = [];
     this.currentWeapon = 0;
     this.weaponName = null;
+    this.scoreInfo = null;
 
     this.enemyHandler = null;
+
+    this.sounds = {};
 
 };
 
@@ -76,6 +80,13 @@ PhaserGame.prototype = {
         this.game.load.image('sprinkle6', 'img/particles/sprinkle6.png')
         this.game.load.image('stick', 'img/particles/stick.png')
 
+
+        // google web font loader
+        game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+
+        // sounds
+        game.load.audio('pew', 'sounds/pew.ogg');
+
     },
 
     create: function () {
@@ -106,6 +117,7 @@ PhaserGame.prototype = {
 
         this.player = this.add.sprite(400, 300, 'player');
         this.player.hp = 5;
+        this.player.score = 0;
 
         for (var i = -2; i < 3; i++) {
             var heart = game.make.sprite(40*i, -100, 'heart1');
@@ -206,6 +218,8 @@ PhaserGame.prototype = {
             enemyEmitter[particles[i][0]].setAlpha(1, 0, 2000);
         }
 
+        this.sounds.pew = game.add.audio('pew');
+
     },
 
     cloudBurst: function(pointer) {
@@ -238,7 +252,18 @@ PhaserGame.prototype = {
     },
 
     testCallback: function() {
-        this.hideHealth();
+        this.sounds.pew.play();
+    },
+
+    showScore: function(score) {
+        if (this.scoreInfo == null) {
+           this.scoreInfo = this.game.add.text(8, 8, "Score: 0");
+           this.scoreInfo.font = 'Fontdiner Swanky';
+           this.scoreInfo.fill = '#eeee00';
+           this.scoreInfo.stroke = '#000000';
+           this.scoreInfo.strokeThickness = 2;
+        }
+        this.scoreInfo.text = "Score: " + score;
     },
 
     spawnEnemy: function () {
@@ -333,12 +358,24 @@ PhaserGame.prototype = {
             this.player.animations.stop(null, true);
 
         // Fire and bouncing animations
-        if (game.input.activePointer.isDown && this.player.visible)
-            this.weapons[this.currentWeapon].fire(this.player);
+        if (game.input.activePointer.isDown && this.player.visible) {
+            if (this.weapons[this.currentWeapon].fire(this.player)) {
+              this.player.scale.y *= 0.8;
+              this.sounds.pew.play();
+            }
+        }
         this.player.scale.y = this.player.yScale - (this.player.yScale - this.player.scale.y) * 0.8;
         this.player.anchor.y = (this.player.scale.y / this.player.yScale) * 0.5;
 
-        this.shake_required = this.enemyHandler.playerUpdate(this.player, game, this.weapons[this.currentWeapon].children);
+        interactions_info = this.enemyHandler.playerUpdate(this.player, game, this.weapons[this.currentWeapon].children);
+
+        this.shake_required = interactions_info.shake_required
+        this.player.score = interactions_info.points
+
+        if (this.player.score > 0) {
+            this.showScore(this.player.score);
+        }
+
         if (this.shake_required) {
             this.shake();
 
@@ -353,6 +390,7 @@ PhaserGame.prototype = {
                 game.time.events.add(Phaser.Timer.SECOND * 1.5, this.hideHealth, this);
             }
         }
+
 
     },
 

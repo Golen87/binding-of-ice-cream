@@ -26,7 +26,7 @@ Weapon.SingleBullet.prototype.constructor = Weapon.SingleBullet;
 
 Weapon.SingleBullet.prototype.fire = function (source) {
 
-    if (this.game.time.time < this.nextFire) { return; }
+    if (this.game.time.time < this.nextFire) { return false; }
 
     var x = source.x;
     var y = source.y;
@@ -37,8 +37,7 @@ Weapon.SingleBullet.prototype.fire = function (source) {
 
     this.nextFire = this.game.time.time + this.fireRate;
 
-    source.scale.y *= 0.8
-
+    return true;
 };
 
 /////////////////////////////////////////////////////////
