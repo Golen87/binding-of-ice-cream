@@ -1,5 +1,8 @@
 //  The core game loop
 
+var START_TEXT = "Binding Of Ice-Ac";
+var GAMEOVER_TEXT = "Game Over - [Space] to restart";
+
 var PhaserGame = function () {
 
     this.background = null;
@@ -86,6 +89,10 @@ PhaserGame.prototype = {
 
         // sounds
         game.load.audio('pew', 'sounds/pew.ogg');
+        game.load.audio('octave', 'sounds/octave.ogg');
+        game.load.audio('lazer', 'sounds/lazer.ogg');
+        game.load.audio('select', 'sounds/select.ogg');
+        game.load.audio('nu', 'sounds/nu.ogg');
 
     },
 
@@ -113,8 +120,6 @@ PhaserGame.prototype = {
             this.weapons[i].visible = false;
         }
 
-        //this.player_1 = new Player(this.game, 400, 300);
-
         this.player = this.add.sprite(400, 300, 'player');
         this.player.hp = 5;
         this.player.score = 0;
@@ -141,7 +146,7 @@ PhaserGame.prototype = {
         //this.player.reset(400, 300);
         //this.player.scale.set(1);
 
-        this.weaponName = this.add.bitmapText(8, 564, 'font', "Binding Of Ice-Ac", 24);
+        this.weaponName = this.add.bitmapText(8, 564, 'font', START_TEXT, 24);
 
         this.enemyHandler = new EnemyHandler.IceCream(this.game);
         this.enemyHandler.visible = true;
@@ -218,7 +223,12 @@ PhaserGame.prototype = {
             enemyEmitter[particles[i][0]].setAlpha(1, 0, 2000);
         }
 
+        // Sounds
         this.sounds.pew = game.add.audio('pew');
+        this.sounds.gameover = game.add.audio('octave');
+        this.sounds.player_was_hit = game.add.audio('nu');
+        this.sounds.enemy_hit = game.add.audio('lazer');
+        this.sounds.player_reborn = game.add.audio('select');
 
     },
 
@@ -278,6 +288,8 @@ PhaserGame.prototype = {
             this.player.children[i].visible = true;
             if (i > this.player.hp - 1)
                 this.player.children[i].loadTexture('heart2', 0);
+            else
+                this.player.children[i].loadTexture('heart1', 0);
         }
     },
 
@@ -372,18 +384,24 @@ PhaserGame.prototype = {
         this.shake_required = interactions_info.shake_required
         this.player.score = interactions_info.points
 
+        if (interactions_info.enemy_hit) {
+            this.sounds.enemy_hit.play();
+        }
+
         if (this.player.score > 0) {
             this.showScore(this.player.score);
         }
 
         if (this.shake_required) {
+            this.sounds.player_was_hit.play();
             this.shake();
 
             this.player.hp -= 1;
 
             if (this.player.hp <= 0) {
-                this.weaponName.text = "Game Over - [Space] to restart";
+                this.weaponName.text = GAMEOVER_TEXT;
                 this.player.visible = false;
+                this.sounds.gameover.play();
             }
             else {
                 this.showHealth();
@@ -395,7 +413,19 @@ PhaserGame.prototype = {
     },
 
     restart: function() {
-      game.state.start('Game');
+      this.player.x = 400;
+      this.player.y = 300;
+      this.cloudBurst(this.player);
+      this.sounds.player_reborn.play();
+
+      this.player.hp = 5;
+      this.player.score = 0;
+      this.player.visible = true;
+      this.weaponName.text = START_TEXT;
+
+      for(var  i = 0; i < this.enemyHandler.children.length; i++) {
+         this.enemyHandler.children[i].kill();
+      }
     },
 
     conditional_restart: function() {
