@@ -121,10 +121,10 @@ PhaserGame.prototype = {
         }
 
         this.player = this.add.sprite(400, 300, 'player');
-        this.player.hp = 5;
+        this.player.hp = 3;
         this.player.score = 0;
 
-        for (var i = -2; i < 3; i++) {
+        for (var i = -1; i < 2; i++) {
             var heart = game.make.sprite(40*i, -100, 'heart1');
             heart.anchor.set(0.5, 0.5);
             heart.scale.set(0.25);
@@ -156,6 +156,9 @@ PhaserGame.prototype = {
 
         // Span only ten enemies
         //game.time.events.repeat(Phaser.Timer.SECOND * 3, 10, this.spawnEnemy, this);
+
+        this.spawnTimer = 0;
+        this.spawnCount = 0.9;
 
         //  Cursor keys to move + space/mouse to fire
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -277,15 +280,21 @@ PhaserGame.prototype = {
     },
 
     spawnEnemy: function () {
-        var x = this.player.x;
-        var y = this.player.y;
+        // One more enemy per 500 points!
 
-        while (pointDistance(x, y, this.player.x, this.player.y) < 200) {
-            x = this.game.rnd.between(50, 750);
-            y = this.game.rnd.between(50, 500);
+        for (var i = 0; i < Math.round(this.spawnCount); i++) {
+            var x = this.player.x;
+            var y = this.player.y;
+
+            while (pointDistance(x, y, this.player.x, this.player.y) < 200) {
+                x = this.game.rnd.between(50, 750);
+                y = this.game.rnd.between(50, 500);
+            }
+
+            this.enemyHandler.spawn(x, y);
         }
 
-        this.enemyHandler.spawn(x, y);
+        this.spawnCount += 0.5;
     },
 
     showHealth: function () {
@@ -387,7 +396,11 @@ PhaserGame.prototype = {
         interactions_info = this.enemyHandler.playerUpdate(this.player, game, this.weapons[this.currentWeapon].children);
 
         if (this.enemyHandler.checkAllDead()) {
-            this.spawnEnemy();
+            if (this.spawnTimer < 0) {
+                this.spawnEnemy();
+                this.spawnTimer = 100;
+            }
+            this.spawnTimer -= 1;
         }
 
         this.shake_required = interactions_info.shake_required
@@ -427,7 +440,7 @@ PhaserGame.prototype = {
       this.cloudBurst(this.player);
       this.sounds.player_reborn.play();
 
-      this.player.hp = 5;
+      this.player.hp = 3;
       this.player.score = 0;
       this.player.visible = true;
       this.weaponName.text = START_TEXT;

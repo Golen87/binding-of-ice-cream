@@ -47,17 +47,16 @@ Enemy.prototype.spawn = function (x, y, angle, speed) {
     this.hp = 10;
 
     this.reset(x, y);
-    this.scale.set(0.6);
-    if (this.key == "sloth" || this.key == "wrath" || this.key == "gluttony")
-        this.scale.set(0.5);
+    this.scale.set(0.65);
 
     this.angle = angle;
-    this.speed = 60;
+    this.speed = 80;
 
     if (this.body.sprite.key == "gluttony") {
         this.dx = 2;
         this.dy = 1;
-        this.speed = 180;
+        this.speed = 220;
+        this.scale.set(0.6);
     }
     else if (this.body.sprite.key == "pride") {
         this.timer = 20;
@@ -66,8 +65,20 @@ Enemy.prototype.spawn = function (x, y, angle, speed) {
         this.animations.play('idle');
         this.anchor.set(0.5);
     }
+    else if (this.body.sprite.key == "wrath") {
+        this.speed = 200;
+        this.hp = 4;
+        this.scale.set(0.5);
+    }
     else if (this.body.sprite.key == "sloth") {
-        this.speed = 1;
+        this.hp = 20;
+        this.speed = 4;
+        this.scale.set(0.8);
+    }
+    else if (this.body.sprite.key == "lust") {
+        this.speed = 60;
+        this.hp = 16;
+        this.scale.set(0.8);
     }
     else {
         this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
@@ -166,7 +177,7 @@ Enemy.prototype.damage = function () {
         game.time.events.add(Phaser.Timer.SECOND * 0.5, this.recover, this);
     }
 
-    if (this.hp < 0) {
+    if (this.hp <= 0) {
         this.kill();
         PhaserGame.prototype.cloudBurst(this);
         PhaserGame.prototype.enemyBurst(this, this.body.sprite.key);
