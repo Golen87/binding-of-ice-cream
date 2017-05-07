@@ -17,6 +17,8 @@ var PhaserGame = function () {
 
     this.enemyHandler = null;
 
+    this.sounds = {};
+
 };
 
 PhaserGame.prototype = {
@@ -66,6 +68,9 @@ PhaserGame.prototype = {
 
         // google web font loader
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+
+        // sounds
+        game.load.audio('pew', 'sounds/pew.ogg');
 
     },
 
@@ -174,6 +179,8 @@ PhaserGame.prototype = {
 
         //this.game.input.onDown.add(this.particleBurst, this);
 
+        this.sounds.pew = game.add.audio('pew');
+
     },
 
     particleBurst: function(pointer) {
@@ -191,7 +198,7 @@ PhaserGame.prototype = {
     },
 
     testCallback: function() {
-        this.player.score += 5;
+        this.sounds.pew.play();
     },
 
     showScore: function(score) {
@@ -297,8 +304,12 @@ PhaserGame.prototype = {
             this.player.animations.stop(null, true);
 
         // Fire and bouncing animations
-        if (game.input.activePointer.isDown && this.player.visible)
-            this.weapons[this.currentWeapon].fire(this.player);
+        if (game.input.activePointer.isDown && this.player.visible) {
+            if (this.weapons[this.currentWeapon].fire(this.player)) {
+              this.player.scale.y *= 0.8;
+              this.sounds.pew.play();
+            }
+        }
         this.player.scale.y = this.player.yScale - (this.player.yScale - this.player.scale.y) * 0.8;
         this.player.anchor.y = (this.player.scale.y / this.player.yScale) * 0.5;
 
