@@ -31,7 +31,12 @@ EnemyHandler.IceCream.prototype.spawn = function (sx, sy) {
     var y = sy;
 
     // Find unused enemy and replace with new
-    var newEnemy = this.getFirstExists(false);
+    var index = Math.floor(Math.random() * this.children.length);
+
+    while (this.children[index].visible)
+        index = Math.floor(Math.random() * this.children.length);
+
+    var newEnemy = this.children[index];
     if (newEnemy)
         newEnemy.spawn(x, y, 0);
 };

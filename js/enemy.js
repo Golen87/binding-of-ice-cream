@@ -52,16 +52,16 @@ Enemy.prototype.spawn = function (x, y, angle, speed) {
         this.scale.set(0.5);
 
     this.angle = angle;
-    this.speed = 50;
+    this.speed = 60;
 
     if (this.body.sprite.key == "gluttony") {
         this.dx = 2;
         this.dy = 1;
-        this.speed = 150;
+        this.speed = 180;
     }
     else if (this.body.sprite.key == "pride") {
         this.timer = 20;
-        this.speed = 150;
+        this.speed = 180;
         this.state = 'idle';
         this.animations.play('idle');
         this.anchor.set(0.5);
