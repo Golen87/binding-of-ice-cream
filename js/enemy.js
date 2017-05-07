@@ -15,8 +15,13 @@ var Enemy = function (game, key) {
     this.scaleSpeed = 0;
 
     if (key == "pride") {
-        this.animations.add('idle', [0,1,2,3], 6, true);
+        this.animations.add('idle', [0], 1, true);
+        this.animations.add('prepare', [1], 1, true);
+        this.animations.add('jump', [2], 1, true);
+        this.animations.add('fall', [3], 1, true);
         this.animations.add('hurt', [4,5], 16, true);
+        this.state = 'idle';
+        this.timer = 0;
     }
     else {
         this.animations.add('idle', [0,1], 4, true);
@@ -50,6 +55,13 @@ Enemy.prototype.spawn = function (x, y, angle, speed) {
         this.dy = 1;
         this.speed = 150;
     }
+    else if (this.body.sprite.key == "pride") {
+        this.timer = 20;
+        this.speed = 150;
+        this.state = 'idle';
+        this.animations.play('idle');
+        this.anchor.set(0.5);
+    }
     else {
         this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
     }
@@ -79,6 +91,57 @@ Enemy.prototype.playerUpdate = function (player) {
 
         this.game.physics.arcade.velocityFromAngle(pointAngle(0, 0, this.dx, this.dy), this.speed, this.body.velocity);
         this.rotation += this.dx / 40;
+    }
+    else if (this.body.sprite.key == "pride") {
+        this.timer -= 1;
+
+        if (this.state == "idle") {
+            if (this.timer <= 0) {
+                this.state = 'prepare';
+                this.animations.play('prepare');
+                this.timer = 10;
+            }
+            this.game.physics.arcade.velocityFromAngle(0, 0, this.body.velocity);
+        }
+        else if (this.state == "prepare") {
+            if (this.timer <= 0) {
+                this.state = 'jump';
+                this.animations.play('jump');
+                this.timer = 20;
+            }
+            this.game.physics.arcade.velocityFromAngle(0, 0, this.body.velocity);
+        }
+        else if (this.state == "jump") {
+            this.anchor.y = 0.5 + 0.4 * Math.pow((20 - this.timer) / 20, 0.5);
+            console.log(this.anchor.y);
+            if (this.timer <= 0) {
+                this.state = 'fall';
+                this.animations.play('fall');
+                this.timer = 20;
+                this.body.enableObstacleCollide = false;
+            }
+            this.game.physics.arcade.velocityFromAngle(angle, this.speed, this.body.velocity);
+        }
+        else if (this.state == "fall") {
+            this.anchor.y = 0.5 + 0.4 * Math.pow((this.timer) / 20, 0.5);
+            console.log(this.anchor.y);
+            if (this.timer <= 0) {
+                this.state = 'recover';
+                this.animations.play('prepare');
+                this.timer = 10;
+                this.game.physics.arcade.velocityFromAngle(0, 0, this.body.velocity);
+                this.anchor.y = 0.5;
+            }
+            this.game.physics.arcade.velocityFromAngle(angle, this.speed, this.body.velocity);
+        }
+        else if (this.state == "recover") {
+            if (this.timer <= 0) {
+                this.state = 'idle';
+                this.animations.play('idle');
+                this.timer = 30;
+            }
+            this.game.physics.arcade.velocityFromAngle(0, 0, this.body.velocity);
+        }
     }
     else {
         this.game.physics.arcade.velocityFromAngle(angle, this.speed, this.body.velocity);
