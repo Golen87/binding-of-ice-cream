@@ -73,6 +73,8 @@ EnemyHandler.IceCream.prototype.playerUpdate = function (player, game, bullets) 
 EnemyHandler.IceCream.prototype.playerCollide = function (player, enemy) {
   if (player.hp > 0) {
     enemy.kill();
+    PhaserGame.prototype.cloudBurst(enemy);
+    PhaserGame.prototype.enemyBurst(enemy, enemy.body.sprite.key);
     this.shake_required = true;
   }
 };

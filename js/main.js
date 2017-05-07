@@ -130,9 +130,9 @@ PhaserGame.prototype = {
         this.player.score = 0;
 
         for (var i = -1; i < 2; i++) {
-            var heart = game.make.sprite(40*i, -100, 'heart1');
+            var heart = game.make.sprite(60*i, -110, 'heart1');
             heart.anchor.set(0.5, 0.5);
-            heart.scale.set(0.25);
+            heart.scale.set(0.375);
             this.player.addChild(heart);
         }
         this.hideHealth();
@@ -144,6 +144,7 @@ PhaserGame.prototype = {
         this.player.yScale = 0.4;
         this.player.scale.set(this.player.yScale);
 
+        this.player.animations.add('idle', [0], 1, true);
         this.player.animations.add('left', [1,2,3,4,5,0], 10, true);
         this.player.animations.add('right', [10,11,12,13,14,0], 10, true);
         this.player.animations.add('down', [6,7,6,0,8,9,8,0], 10, true);
@@ -212,7 +213,8 @@ PhaserGame.prototype = {
             ['gluttony', 'dorito'],
             ['pride', 'ice'],
             ['wrath', ['sprinkle1', 'sprinkle2', 'sprinkle3', 'sprinkle4', 'sprinkle5', 'sprinkle6']],
-            ['lust', 'stick']
+            ['lust', 'stick'],
+            ['player', ['eraser1', 'eraser2', 'eraser3']]
         ];
         enemyEmitter = {};
         for (var i = 0; i < particles.length; i++) {
@@ -229,6 +231,9 @@ PhaserGame.prototype = {
             enemyEmitter[particles[i][0]].setYSpeed(-100, -300);
             enemyEmitter[particles[i][0]].setScale(1, 0.5, 1, 0.5, 2000);
             enemyEmitter[particles[i][0]].setAlpha(1, 0, 2000);
+            if (particles[i][0] == 'player') {
+                enemyEmitter[particles[i][0]].setScale(0.4, 0.2, 0.4, 0.2, 2000);
+            }
         }
 
         // Sounds
@@ -278,6 +283,7 @@ PhaserGame.prototype = {
         if (key == 'lust') count = 1;
         //if (key == 'sloth') count = 5;
         if (key == 'envy') count = 1;
+        if (key == 'player') count = 5;
 
         enemyEmitter[key].start(true, 2000, null, count);
 
@@ -415,7 +421,7 @@ PhaserGame.prototype = {
         else if (dv.y < 0)
             this.player.animations.play('up');
         else
-            this.player.animations.stop(null, true);
+            this.player.animations.play('idle');
 
         // Fire and bouncing animations
         if (game.input.activePointer.isDown && this.player.visible) {
@@ -458,6 +464,8 @@ PhaserGame.prototype = {
                 this.weaponName.text = GAMEOVER_TEXT;
                 this.player.visible = false;
                 this.sounds.gameover.play();
+                this.cloudBurst(this.player);
+                this.enemyBurst(this.player, 'player');
             }
             else {
                 this.showHealth();
