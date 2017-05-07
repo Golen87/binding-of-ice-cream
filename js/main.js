@@ -57,6 +57,7 @@ PhaserGame.prototype = {
         this.load.spritesheet('lust', 'img/lust.png', 160, 200);
         this.load.spritesheet('sloth', 'img/sloth.png', 195, 125);
         this.load.spritesheet('pride', 'img/pride.png', 160, 160);
+        this.load.spritesheet('envy', 'img/envy.png', 180, 160);
 
 
         // Particles
@@ -65,6 +66,20 @@ PhaserGame.prototype = {
         {
             this.game.load.image('cloud' + i, 'img/cloud' + i + '.png');
         }
+
+        this.game.load.image('bubble', 'img/particles/bubble.png')
+        this.game.load.image('cherry', 'img/particles/cherry.png')
+        this.game.load.image('cone', 'img/particles/cone.png')
+        this.game.load.image('dorito', 'img/particles/dorito.png')
+        this.game.load.image('ice', 'img/particles/ice.png')
+        this.game.load.image('sprinkle1', 'img/particles/sprinkle1.png')
+        this.game.load.image('sprinkle2', 'img/particles/sprinkle2.png')
+        this.game.load.image('sprinkle3', 'img/particles/sprinkle3.png')
+        this.game.load.image('sprinkle4', 'img/particles/sprinkle4.png')
+        this.game.load.image('sprinkle5', 'img/particles/sprinkle5.png')
+        this.game.load.image('sprinkle6', 'img/particles/sprinkle6.png')
+        this.game.load.image('stick', 'img/particles/stick.png')
+
 
         // google web font loader
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
@@ -180,6 +195,31 @@ PhaserGame.prototype = {
         emitter.setScale(1, 0.5, 1, 0.5, 2000);
         emitter.setAlpha(1, 0, 2000);
 
+        var particles = [
+            ['sloth', 'bubble'],
+            ['envy', 'cherry'],
+            ['greed', 'cone'],
+            ['gluttony', 'dorito'],
+            ['pride', 'ice'],
+            ['wrath', ['sprinkle1', 'sprinkle2', 'sprinkle3', 'sprinkle4', 'sprinkle5', 'sprinkle6']],
+            ['lust', 'stick']
+        ];
+        enemyEmitter = {};
+        for (var i = 0; i < particles.length; i++) {
+            enemyEmitter[particles[i][0]] = game.add.emitter(0, 0, 100);
+            enemyEmitter[particles[i][0]].makeParticles(particles[i][1]);
+            enemyEmitter[particles[i][0]].gravity = 500;
+            enemyEmitter[particles[i][0]].width = 70;
+            enemyEmitter[particles[i][0]].height = 70;
+            enemyEmitter[particles[i][0]].minRotation = -180;
+            enemyEmitter[particles[i][0]].maxRotation = 180;
+            enemyEmitter[particles[i][0]].maxParticleScale = 2.0;
+            enemyEmitter[particles[i][0]].minParticleScale = 1.4;
+            enemyEmitter[particles[i][0]].setXSpeed(-150, 150);
+            enemyEmitter[particles[i][0]].setYSpeed(-100, -300);
+            enemyEmitter[particles[i][0]].setScale(1, 0.5, 1, 0.5, 2000);
+            enemyEmitter[particles[i][0]].setAlpha(1, 0, 2000);
+        }
 
         // Sounds
         this.sounds.pew = game.add.audio('pew');
@@ -189,17 +229,32 @@ PhaserGame.prototype = {
 
     },
 
-    particleBurst: function(pointer) {
+    cloudBurst: function(pointer) {
 
         //  Position the emitter where the mouse/touch event was
         emitter.x = pointer.x;
         emitter.y = pointer.y;
 
-        //  The first parameter sets the effect to "explode" which means all particles are emitted at once
-        //  The second gives each particle a 2000ms lifespan
-        //  The third is ignored when using burst/explode mode
-        //  The final parameter (10) is how many particles will be emitted in this single burst
         emitter.start(true, 2000, null, 15);
+
+    },
+
+    enemyBurst: function(pointer, key) {
+
+        //  Position the emitter where the mouse/touch event was
+        enemyEmitter[key].x = pointer.x;
+        enemyEmitter[key].y = pointer.y;
+
+        var count = 10;
+        //if (key == 'gluttony') count = 1;
+        //if (key == 'pride') count = 1;
+        //if (key == 'wrath') count = 1;
+        if (key == 'greed') count = 3;
+        if (key == 'lust') count = 1;
+        //if (key == 'sloth') count = 5;
+        if (key == 'envy') count = 1;
+
+        enemyEmitter[key].start(true, 2000, null, count);
 
     },
 

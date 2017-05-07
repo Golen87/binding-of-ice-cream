@@ -23,6 +23,10 @@ var Enemy = function (game, key) {
         this.state = 'idle';
         this.timer = 0;
     }
+    else if (key == "envy") {
+        this.animations.add('idle', [0,1,2,1], 4, true);
+        this.animations.add('hurt', [3,4], 16, true);
+    }
     else {
         this.animations.add('idle', [0,1], 4, true);
         this.animations.add('hurt', [2,3], 16, true);
@@ -66,7 +70,7 @@ Enemy.prototype.spawn = function (x, y, angle, speed) {
         this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
     }
 
-    PhaserGame.prototype.particleBurst(this);
+    PhaserGame.prototype.cloudBurst(this);
 
 };
 
@@ -161,7 +165,8 @@ Enemy.prototype.damage = function () {
 
     if (this.hp < 0) {
         this.kill();
-        PhaserGame.prototype.particleBurst(this);
+        PhaserGame.prototype.cloudBurst(this);
+        PhaserGame.prototype.enemyBurst(this, this.body.sprite.key);
     }
 
 };
