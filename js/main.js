@@ -71,6 +71,9 @@ PhaserGame.prototype = {
 
         // sounds
         game.load.audio('pew', 'sounds/pew.ogg');
+        game.load.audio('octave', 'sounds/octave.ogg');
+        game.load.audio('lazer', 'sounds/lazer.ogg');
+        game.load.audio('nu', 'sounds/nu.ogg');
 
     },
 
@@ -177,9 +180,12 @@ PhaserGame.prototype = {
         emitter.setScale(1, 0.5, 1, 0.5, 2000);
         emitter.setAlpha(1, 0, 2000);
 
-        //this.game.input.onDown.add(this.particleBurst, this);
 
+        // Sounds
         this.sounds.pew = game.add.audio('pew');
+        this.sounds.gameover = game.add.audio('octave');
+        this.sounds.player_was_hit = game.add.audio('nu');
+        this.sounds.enemy_hit = game.add.audio('lazer');
 
     },
 
@@ -318,11 +324,16 @@ PhaserGame.prototype = {
         this.shake_required = interactions_info.shake_required
         this.player.score = interactions_info.points
 
+        if (interactions_info.enemy_hit) {
+            this.sounds.enemy_hit.play();
+        }
+
         if (this.player.score > 0) {
             this.showScore(this.player.score);
         }
 
         if (this.shake_required) {
+            this.sounds.player_was_hit.play();
             this.shake();
 
             this.player.hp -= 1;
@@ -330,6 +341,7 @@ PhaserGame.prototype = {
             if (this.player.hp <= 0) {
                 this.weaponName.text = "Game Over - [Space] to restart";
                 this.player.visible = false;
+                this.sounds.gameover.play();
             }
             else {
                 this.showHealth();

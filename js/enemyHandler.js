@@ -5,6 +5,7 @@ EnemyHandler.IceCream = function (game) {
     Phaser.Group.call(this, game, game.world, 'Single Enemy', false, true, Phaser.Physics.ARCADE);
 
     this.shake_required = false;
+    this.enemy_hit = false;
     this.award_points = 0;
 
     // Max limit of 64 enemies
@@ -41,7 +42,8 @@ EnemyHandler.IceCream.prototype.playerUpdate = function (player, game, bullets) 
             this.children[i].playerUpdate(player);
     }
 
-    this.shake_required = false
+    this.shake_required = false;
+    this.enemy_hit = false;
     game.physics.arcade.collide(player, this.children, this.playerCollide, null, this);
 
     game.physics.arcade.collide(bullets, this.children, this.bulletsCollide, null, this);
@@ -49,6 +51,7 @@ EnemyHandler.IceCream.prototype.playerUpdate = function (player, game, bullets) 
     var response = {};
     response.shake_required = this.shake_required;
     response.points = this.award_points
+    response.enemy_hit = this.enemy_hit;
 
     return response
 };
@@ -63,6 +66,7 @@ EnemyHandler.IceCream.prototype.playerCollide = function (player, enemy) {
 EnemyHandler.IceCream.prototype.bulletsCollide = function(bullet, enemy) {
     bullet.kill();
     this.award_points += 5;
+    this.enemy_hit = true;
 
     enemy.damage();
     if (enemy.hp <= 0) {
