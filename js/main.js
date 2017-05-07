@@ -55,6 +55,8 @@ PhaserGame.prototype = {
         this.load.spritesheet('greed', 'img/greed.png', 117, 189);
         this.load.spritesheet('gluttony', 'img/gluttony.png', 200, 200);
         this.load.spritesheet('wrath', 'img/wrath.png', 200, 200);
+        this.load.spritesheet('lust', 'img/lust.png', 160, 200);
+        this.load.spritesheet('sloth', 'img/sloth.png', 195, 125);
 
 
         // Particles
@@ -113,7 +115,7 @@ PhaserGame.prototype = {
         this.enemyHandler.visible = true;
 
         // spawn enemies regularly
-        game.time.events.loop(Phaser.Timer.SECOND * 2, this.spawnEnemy, this);
+        game.time.events.loop(Phaser.Timer.SECOND * 5, this.spawnEnemy, this);
 
         // Span only ten enemies
         //game.time.events.repeat(Phaser.Timer.SECOND * 3, 10, this.spawnEnemy, this);

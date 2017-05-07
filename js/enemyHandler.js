@@ -18,6 +18,8 @@ EnemyHandler.IceCream = function (game) {
         this.add(new Enemy(game, 'gluttony'), true);
         this.add(new Enemy(game, 'wrath'), true);
         this.add(new Enemy(game, 'greed'), true);
+        this.add(new Enemy(game, 'lust'), true);
+        this.add(new Enemy(game, 'sloth'), true);
     }
 
     return this;
