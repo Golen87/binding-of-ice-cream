@@ -235,14 +235,15 @@ PhaserGame.prototype = {
         this.sounds.enemy_hit = game.add.audio('lazer');
         this.sounds.player_reborn = game.add.audio('select');
 
+        // Background music -- won't loop for some reason :(
         //this.sounds.music = game.add.audio('music'); // new Phaser.Sound(game, 'music', 1, true);
         //this.sounds.music.loop = true;
         //this.sounds.music.play();
 
-        var background_music = this.game.add.audio('music'); //new Phaser.Sound(this.game, 'music', 1, true);
-        background_music.volume = 0.6;
-        background_music.loop = true;
-        setTimeout(function(){background_music.play()},100);
+        //var background_music = this.game.add.audio('music'); //new Phaser.Sound(this.game, 'music', 1, true);
+        //background_music.volume = 0.6;
+        //background_music.loop = true;
+        //setTimeout(function(){background_music.play()},100);
 
     },
 
