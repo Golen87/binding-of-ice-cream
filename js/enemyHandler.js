@@ -55,9 +55,10 @@ EnemyHandler.IceCream.prototype.playerUpdate = function (player, game, bullets) 
 };
 
 EnemyHandler.IceCream.prototype.playerCollide = function (player, enemy) {
-  enemy.kill();
-  this.shake_required = true;
-
+  if (player.hp > 0) {
+    enemy.kill();
+    this.shake_required = true;
+  }
 };
 
 function bulletsCollide(bullet, enemy) {
