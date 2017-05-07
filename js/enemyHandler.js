@@ -8,15 +8,13 @@ EnemyHandler.IceCream = function (game) {
 
     Phaser.Group.call(this, game, game.world, 'Single Enemy', false, true, Phaser.Physics.ARCADE);
 
-    this.enemySpeed = 50;
-
     this.shake_required = false;
 
     // Max limit of 64 enemies
     for (var i = 0; i < 16; i++)
     {
-        this.add(new Enemy(game, 'pride'), true);
         this.add(new Enemy(game, 'gluttony'), true);
+        this.add(new Enemy(game, 'pride'), true);
         this.add(new Enemy(game, 'wrath'), true);
         this.add(new Enemy(game, 'greed'), true);
         this.add(new Enemy(game, 'lust'), true);
@@ -37,7 +35,7 @@ EnemyHandler.IceCream.prototype.spawn = function (sx, sy) {
     // Find unused enemy and replace with new
     var newEnemy = this.getFirstExists(false);
     if (newEnemy)
-        newEnemy.spawn(x, y, 0, this.enemySpeed);
+        newEnemy.spawn(x, y, 0);
 };
 
 EnemyHandler.IceCream.prototype.playerUpdate = function (player, game, bullets) {
