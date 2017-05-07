@@ -155,7 +155,7 @@ PhaserGame.prototype = {
         this.enemyHandler.visible = true;
 
         // spawn enemies regularly
-        game.time.events.loop(Phaser.Timer.SECOND * 5, this.spawnEnemy, this);
+        //game.time.events.loop(Phaser.Timer.SECOND * 5, this.spawnEnemy, this);
 
         // Span only ten enemies
         //game.time.events.repeat(Phaser.Timer.SECOND * 3, 10, this.spawnEnemy, this);
@@ -285,10 +285,15 @@ PhaserGame.prototype = {
     },
 
     spawnEnemy: function () {
-        this.enemyHandler.spawn(
-          this.game.rnd.between(0, 800),
-          this.game.rnd.between(0, 600)
-        );
+        var x = this.player.x;
+        var y = this.player.y;
+
+        while (pointDistance(x, y, this.player.x, this.player.y) < 200) {
+            x = this.game.rnd.between(50, 750);
+            y = this.game.rnd.between(50, 500);
+        }
+
+        this.enemyHandler.spawn(x, y);
     },
 
     showHealth: function () {
@@ -388,6 +393,10 @@ PhaserGame.prototype = {
         this.player.anchor.y = (this.player.scale.y / this.player.yScale) * 0.5;
 
         interactions_info = this.enemyHandler.playerUpdate(this.player, game, this.weapons[this.currentWeapon].children);
+
+        if (this.enemyHandler.checkAllDead()) {
+            this.spawnEnemy();
+        }
 
         this.shake_required = interactions_info.shake_required
         this.player.score = interactions_info.points
