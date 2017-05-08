@@ -165,9 +165,9 @@ Enemy.prototype.playerUpdate = function (player) {
 
 };
 
-Enemy.prototype.damage = function () {
+Enemy.prototype.damage = function (power) {
 
-    this.hp -= 1;
+    this.hp -= power;
 
     if (! this.damageAnimation) {
         this.damageAnimation = true;

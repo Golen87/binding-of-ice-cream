@@ -30,14 +30,18 @@ Weapon.SingleBullet.prototype.fire = function (source) {
 
     var x = source.x;
     var y = source.y;
-
     var angle = pointAngle(source.x, source.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
 
-    this.getFirstExists(false).fire(x, y, angle, this.bulletSpeed, 0, 0);
+    var didShoot = false;
+    var b = this.getFirstExists(false);
+    if (b) {
+        didShoot = true;
+        b.fire(x, y, angle, this.bulletSpeed, 0, 0);
+    }
 
     this.nextFire = this.game.time.time + this.fireRate;
 
-    return true;
+    return didShoot;
 };
 
 /////////////////////////////////////////////////////////
@@ -50,7 +54,7 @@ Weapon.FrontAndBack = function (game) {
 
     this.nextFire = 0;
     this.bulletSpeed = 600;
-    this.fireRate = 100;
+    this.fireRate = 250;
 
     for (var i = 0; i < 64; i++)
     {
@@ -68,13 +72,22 @@ Weapon.FrontAndBack.prototype.fire = function (source) {
 
     if (this.game.time.time < this.nextFire) { return; }
 
-    var x = source.x + 10;
-    var y = source.y + 10;
+    var x = source.x;
+    var y = source.y;
+    var angle = pointAngle(source.x, source.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
 
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
-    this.getFirstExists(false).fire(x, y, 180, this.bulletSpeed, 0, 0);
+    var didShoot = false;
+    for (var i = 0; i <= 180; i+=180) {
+        var b = this.getFirstExists(false);
+        if (b) {
+            didShoot = true;
+            b.fire(x, y, angle+i, this.bulletSpeed, 0, 0);
+        }
+    }
 
     this.nextFire = this.game.time.time + this.fireRate;
+
+    return didShoot;
 
 };
 
@@ -88,7 +101,7 @@ Weapon.ThreeWay = function (game) {
 
     this.nextFire = 0;
     this.bulletSpeed = 600;
-    this.fireRate = 100;
+    this.fireRate = 300;
 
     for (var i = 0; i < 96; i++)
     {
@@ -104,16 +117,24 @@ Weapon.ThreeWay.prototype.constructor = Weapon.ThreeWay;
 
 Weapon.ThreeWay.prototype.fire = function (source) {
 
-    if (this.game.time.time < this.nextFire) { return; }
+    if (this.game.time.time < this.nextFire) { return false; }
 
-    var x = source.x + 10;
-    var y = source.y + 10;
+    var x = source.x;
+    var y = source.y;
+    var angle = pointAngle(source.x, source.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
 
-    this.getFirstExists(false).fire(x, y, 270, this.bulletSpeed, 0, 0);
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
-    this.getFirstExists(false).fire(x, y, 90, this.bulletSpeed, 0, 0);
+    var didShoot = false;
+    for (var i = -30; i <= 30; i+=30) {
+        var b = this.getFirstExists(false);
+        if (b) {
+            didShoot = true;
+            b.fire(x, y, angle+i, this.bulletSpeed, 0, 0);
+        }
+    }
 
     this.nextFire = this.game.time.time + this.fireRate;
+
+    return didShoot;
 
 };
 
@@ -127,7 +148,7 @@ Weapon.EightWay = function (game) {
 
     this.nextFire = 0;
     this.bulletSpeed = 600;
-    this.fireRate = 100;
+    this.fireRate = 350;
 
     for (var i = 0; i < 96; i++)
     {
@@ -143,21 +164,24 @@ Weapon.EightWay.prototype.constructor = Weapon.EightWay;
 
 Weapon.EightWay.prototype.fire = function (source) {
 
-    if (this.game.time.time < this.nextFire) { return; }
+    if (this.game.time.time < this.nextFire) { return false; }
 
-    var x = source.x + 16;
-    var y = source.y + 10;
+    var x = source.x;
+    var y = source.y;
+    var angle = pointAngle(source.x, source.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
 
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
-    this.getFirstExists(false).fire(x, y, 45, this.bulletSpeed, 0, 0);
-    this.getFirstExists(false).fire(x, y, 90, this.bulletSpeed, 0, 0);
-    this.getFirstExists(false).fire(x, y, 135, this.bulletSpeed, 0, 0);
-    this.getFirstExists(false).fire(x, y, 180, this.bulletSpeed, 0, 0);
-    this.getFirstExists(false).fire(x, y, 225, this.bulletSpeed, 0, 0);
-    this.getFirstExists(false).fire(x, y, 270, this.bulletSpeed, 0, 0);
-    this.getFirstExists(false).fire(x, y, 315, this.bulletSpeed, 0, 0);
+    var didShoot = false;
+    for (var i = 0; i < 360; i+=45) {
+        var b = this.getFirstExists(false);
+        if (b) {
+            didShoot = true;
+            b.fire(x, y, angle+i, this.bulletSpeed, 0, 0);
+        }
+    }
 
     this.nextFire = this.game.time.time + this.fireRate;
+
+    return didShoot;
 
 };
 
@@ -171,7 +195,7 @@ Weapon.ScatterShot = function (game) {
 
     this.nextFire = 0;
     this.bulletSpeed = 600;
-    this.fireRate = 40;
+    this.fireRate = 80;
 
     for (var i = 0; i < 32; i++)
     {
@@ -187,14 +211,22 @@ Weapon.ScatterShot.prototype.constructor = Weapon.ScatterShot;
 
 Weapon.ScatterShot.prototype.fire = function (source) {
 
-    if (this.game.time.time < this.nextFire) { return; }
+    if (this.game.time.time < this.nextFire) { return false; }
 
-    var x = source.x + 16;
-    var y = (source.y + source.height / 2) + this.game.rnd.between(-10, 10);
+    var x = source.x + this.game.rnd.between(-20, 20);
+    var y = source.y + this.game.rnd.between(-20, 20);
+    var angle = pointAngle(source.x, source.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
 
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
+    var didShoot = false;
+    var b = this.getFirstExists(false);
+    if (b) {
+        didShoot = true;
+        b.fire(x, y, angle, this.bulletSpeed, 0, 0);
+    }
 
     this.nextFire = this.game.time.time + this.fireRate;
+
+    return didShoot;
 
 };
 
@@ -208,7 +240,7 @@ Weapon.Beam = function (game) {
 
     this.nextFire = 0;
     this.bulletSpeed = 1000;
-    this.fireRate = 45;
+    this.fireRate = 70;
 
     for (var i = 0; i < 64; i++)
     {
@@ -224,14 +256,22 @@ Weapon.Beam.prototype.constructor = Weapon.Beam;
 
 Weapon.Beam.prototype.fire = function (source) {
 
-    if (this.game.time.time < this.nextFire) { return; }
+    if (this.game.time.time < this.nextFire) { return false; }
 
-    var x = source.x + 40;
-    var y = source.y + 10;
+    var x = source.x;
+    var y = source.y;
+    var angle = pointAngle(source.x, source.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
 
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
+    var didShoot = false;
+    var b = this.getFirstExists(false);
+    if (b) {
+        didShoot = true;
+        b.fire(x, y, angle, this.bulletSpeed, 0, 0);
+    }
 
     this.nextFire = this.game.time.time + this.fireRate;
+
+    return didShoot;
 
 };
 
@@ -245,7 +285,7 @@ Weapon.SplitShot = function (game) {
 
     this.nextFire = 0;
     this.bulletSpeed = 700;
-    this.fireRate = 40;
+    this.fireRate = 150;
 
     for (var i = 0; i < 64; i++)
     {
@@ -261,16 +301,24 @@ Weapon.SplitShot.prototype.constructor = Weapon.SplitShot;
 
 Weapon.SplitShot.prototype.fire = function (source) {
 
-    if (this.game.time.time < this.nextFire) { return; }
+    if (this.game.time.time < this.nextFire) { return false; }
 
-    var x = source.x + 20;
-    var y = source.y + 10;
+    var x = source.x;
+    var y = source.y;
+    var angle = pointAngle(source.x, source.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
 
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, -500);
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 500);
+    var didShoot = false;
+    for (var i = -500; i <= 500; i+=500) {
+        var b = this.getFirstExists(false);
+        if (b) {
+            didShoot = true;
+            b.fire(x, y, angle, this.bulletSpeed, -4*i*Math.sin(angle/180*Math.PI), 4*i*Math.cos(angle/180*Math.PI));
+        }
+    }
 
     this.nextFire = this.game.time.time + this.fireRate;
+
+    return didShoot;
 
 };
 
@@ -284,7 +332,7 @@ Weapon.Pattern = function (game) {
 
     this.nextFire = 0;
     this.bulletSpeed = 600;
-    this.fireRate = 40;
+    this.fireRate = 60;
 
     this.pattern = Phaser.ArrayUtils.numberArrayStep(-800, 800, 200);
     this.pattern = this.pattern.concat(Phaser.ArrayUtils.numberArrayStep(800, -800, -200));
@@ -305,12 +353,18 @@ Weapon.Pattern.prototype.constructor = Weapon.Pattern;
 
 Weapon.Pattern.prototype.fire = function (source) {
 
-    if (this.game.time.time < this.nextFire) { return; }
+    if (this.game.time.time < this.nextFire) { return false; }
 
-    var x = source.x + 20;
-    var y = source.y + 10;
+    var x = source.x;
+    var y = source.y;
+    var angle = pointAngle(source.x, source.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
 
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, this.pattern[this.patternIndex]);
+    var didShoot = false;
+    var b = this.getFirstExists(false);
+    if (b) {
+        didShoot = true;
+        this.getFirstExists(false).fire(x, y, angle, this.bulletSpeed, -2*this.pattern[this.patternIndex]*Math.sin(angle/180*Math.PI), 2*this.pattern[this.patternIndex]*Math.cos(angle/180*Math.PI));
+    }
 
     this.patternIndex++;
 
@@ -320,6 +374,8 @@ Weapon.Pattern.prototype.fire = function (source) {
     }
 
     this.nextFire = this.game.time.time + this.fireRate;
+
+    return didShoot;
 
 };
 
@@ -351,15 +407,24 @@ Weapon.Rockets.prototype.constructor = Weapon.Rockets;
 
 Weapon.Rockets.prototype.fire = function (source) {
 
-    if (this.game.time.time < this.nextFire) { return; }
+    if (this.game.time.time < this.nextFire) { return false; }
 
-    var x = source.x + 10;
-    var y = source.y + 10;
+    var x = source.x;
+    var y = source.y;
+    var angle = pointAngle(source.x, source.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
 
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, -700);
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 700);
+    var didShoot = false;
+    for (var i = -800; i <= 800; i+=400) {
+        var b = this.getFirstExists(false);
+        if (b) {
+            didShoot = true;
+            b.fire(x, y, angle, this.bulletSpeed, -i*Math.sin(angle/180*Math.PI), i*Math.cos(angle/180*Math.PI));
+        }
+    }
 
     this.nextFire = this.game.time.time + this.fireRate;
+
+    return didShoot;
 
 };
 
@@ -391,14 +456,22 @@ Weapon.ScaleBullet.prototype.constructor = Weapon.ScaleBullet;
 
 Weapon.ScaleBullet.prototype.fire = function (source) {
 
-    if (this.game.time.time < this.nextFire) { return; }
+    if (this.game.time.time < this.nextFire) { return false; }
 
-    var x = source.x + 10;
-    var y = source.y + 10;
+    var x = source.x;
+    var y = source.y;
+    var angle = pointAngle(source.x, source.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
 
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
+    var didShoot = false;
+    var b = this.getFirstExists(false);
+    if (b) {
+        didShoot = true;
+        b.fire(x, y, angle, this.bulletSpeed, 0, 0);
+    }
 
     this.nextFire = this.game.time.time + this.fireRate;
+
+    return didShoot;
 
 };
 
@@ -428,9 +501,14 @@ Weapon.Combo1.prototype.reset = function () {
 
 Weapon.Combo1.prototype.fire = function (source) {
 
-    this.weapon1.fire(source);
-    this.weapon2.fire(source);
+    var didShoot = false;
 
+    if (this.weapon1.fire(source))
+        didShoot = true;
+    if (this.weapon2.fire(source))
+        didShoot = true;
+
+    return didShoot;
 };
 
 /////////////////////////////////////////////////////
@@ -464,9 +542,16 @@ Weapon.Combo2.prototype.reset = function () {
 
 Weapon.Combo2.prototype.fire = function (source) {
 
-    this.weapon1.fire(source);
-    this.weapon2.fire(source);
-    this.weapon3.fire(source);
+    var didShoot = false;
+
+    if (this.weapon1.fire(source))
+        didShoot = true;
+    if (this.weapon2.fire(source))
+        didShoot = true;
+    if (this.weapon3.fire(source))
+        didShoot = true;
+
+    return didShoot;
 
 };
 

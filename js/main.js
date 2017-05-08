@@ -115,8 +115,8 @@ PhaserGame.prototype = {
         this.weapons.push(new Weapon.Pattern(this.game));
         this.weapons.push(new Weapon.Rockets(this.game));
         this.weapons.push(new Weapon.ScaleBullet(this.game));
-        this.weapons.push(new Weapon.Combo1(this.game));
-        this.weapons.push(new Weapon.Combo2(this.game));
+        //this.weapons.push(new Weapon.Combo1(this.game));
+        //this.weapons.push(new Weapon.Combo2(this.game));
 
         this.currentWeapon = 0;
 

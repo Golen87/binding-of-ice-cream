@@ -14,7 +14,7 @@ var Bullet = function (game, key) {
     this.outOfBoundsKill = true;
     this.exists = false;
 
-    this.tracking = false;
+    this.tracking = true;
     this.scaleSpeed = 0;
 
 };

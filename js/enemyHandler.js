@@ -94,7 +94,10 @@ EnemyHandler.IceCream.prototype.bulletsCollide = function(bullet, enemy) {
     this.award_points += 5;
     this.enemy_hit = true;
 
-    enemy.damage();
+    // Always 1, but not for scaling bullet
+    var power = bullet.scale.multiply(1/0.4, 1/0.4).x;
+
+    enemy.damage(power);
     if (enemy.hp <= 0) {
         this.award_points += 50;
     }
