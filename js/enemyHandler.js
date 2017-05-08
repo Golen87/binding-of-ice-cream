@@ -35,9 +35,19 @@ EnemyHandler.IceCream.prototype.checkAllDead = function () {
     return true;
 }
 
+EnemyHandler.IceCream.prototype.checkAllAlive = function () {
+    for (var i = 0; i < this.children.length; i++) {
+        if (!this.children[i].exists)
+            return false;
+    }
+    return true;
+}
+
 EnemyHandler.IceCream.prototype.spawn = function (sx, sy) {
     var x = sx;
     var y = sy;
+
+    if (this.checkAllAlive()) return;
 
     // Find unused enemy and replace with new
     var index = Math.floor(Math.random() * this.children.length);
